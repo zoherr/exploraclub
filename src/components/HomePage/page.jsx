@@ -1,3 +1,4 @@
+"use client";
 import React from 'react'
 import Image from "next/image";
 import { FlipWords } from '../ui/Flip-word';
@@ -8,7 +9,7 @@ function HomePage() {
     const words = ["better", "cute", "beautiful", "modern"];
 
     return (
-        <div  data-scroll  className='z-[999] sm:mt-4 mb-6 sm:mb-0 mt-5 sm:px-10  sm:min-h-screen '>
+        <div   className='z-[999] sm:mt-4 mb-6 sm:mb-0 mt-5 sm:px-10  sm:min-h-screen '>
             <div className="text-center pt-[5rem] sm:pt-[6rem] justify-center flex text-white ">
                 <div className="text-2xl sm:text-6xl font-semibold sm:w-[75%]">
                     <p>Seamless Financial Solution.</p>
