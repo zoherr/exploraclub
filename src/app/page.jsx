@@ -5,6 +5,7 @@ import HomeMarquee from "@/components/Marquee/home";
 import Navbar from "@/components/navbar/page";
 import { useEffect, useRef } from 'react';
 import Vision from "@/components/Vision/Vision";
+import { GridBackground } from "@/components/Grid/page";
 
 // Disable SSR for this component to ensure it's only rendered on the client
 const Home = () => {
@@ -25,7 +26,7 @@ const Home = () => {
 
   return (
     <div >
-      <div className="min-w-screen min-h-screen pb-8">
+      <div className="bg-grid-[#6A9C89]/[0.2] min-w-screen min-h-screen pb-8">
         <Navbar />
         <HomePage />
         <HomeMarquee />
