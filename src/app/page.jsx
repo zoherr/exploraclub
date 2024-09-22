@@ -1,77 +1,42 @@
-import Image from "next/image";
+"use client";  // Marking this as a client-side component
+import dynamic from "next/dynamic";
+import HomePage from "@/components/HomePage/page";
+import HomeMarquee from "@/components/Marquee/home";
+import Navbar from "@/components/navbar/page";
+import { useEffect, useRef } from 'react';
+import LocomotiveScroll from 'locomotive-scroll';
+import Vision from "@/components/Vision/Vision";
 
-export default function Home() {
+// Disable SSR for this component to ensure it's only rendered on the client
+const Home = () => {
+  const scrollRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const scroll = new LocomotiveScroll({
+      el: scrollRef.current,
+      smooth: true,  // Enable smooth scrolling
+      smoothMobile: true,  // Optional, if you want smooth scrolling on mobile too
+      inertia: 0.75,  // Optional, customize inertia (scroll speed)
+    });
+
+    return () => {
+      if (scroll) scroll.destroy();
+    };
+  }, []);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <div data-scroll-container ref={scrollRef}>
 
-     
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      <div data-scroll-section className="min-w-screen min-h-screen pb-8">
+      <Navbar />
+        <HomePage />
+        <HomeMarquee />
+        <Vision />
+      </div>
     </div>
   );
-}
+};
+
+export default dynamic(() => Promise.resolve(Home), { ssr: false });

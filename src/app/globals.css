@@ -1,27 +1,63 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@import "locomotive-scroll/dist/locomotive-scroll.css";
+[data-scroll-container] {
+    overflow: hidden;
   }
-}
-
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+    background-color: #16423C;
 }
-
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+/*  */
+.blur-effect {
+    transition: transform 0.5s cubic-bezier(0.3, 0.86, 0.36, 0.95);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
-}
+/*  */
+@font-face {
+    font-family: "FoundersGrotesk-Semibold";
+    src: local("FoundersGrotesk-Semibold"),
+      url(./fonts/FoundersGrotesk-Semibold.ttf) format("truetype");
+  }
+  @font-face {
+    font-family: "NeueMontreal-Regular";
+    src: local("NeueMontreal-Regular"),
+      url(./fonts/NeueMontreal-Regular.ttf) format("truetype");
+  }
+
+  .FoundersGrotesk-Semibold {
+    font-family: "FoundersGrotesk-Semibold", sans-serif;
+    font-style: normal;
+  }
+
+  .NeueMontreal-Regular{
+    font-family: "NeueMontreal-Regular", sans-serif;
+    font-style: normal;
+  }
+/*  */
+.lines {
+    display: flex;
+    column-gap: 0.1em;
+    align-self: flex-end;
+  }
+  .line1,
+  .line3 {
+    width: 2px;
+    height: 0.5em;
+    background-color: black;
+    border-radius: 25px 25px 0px 0px;
+    margin-top: 0.5em;
+  }
+  .line2 {
+    flex-grow: 1;
+    width: 2px;
+    height: 1em;
+    background-color: black;
+    border-radius: 25px 25px 0px 0px;
+  }
+/*  */
+/*  */
+
+/*  */
+/*  */
