@@ -35,7 +35,7 @@ export default function Navbar() {
     };
     useEffect(() => {
         refetch()
-    }, [])
+    }, [refetch])
 
     const [registerUser, setRegisterUser] = useState({
         name: "",
@@ -63,7 +63,7 @@ export default function Navbar() {
             setIsUserLoggedIn(false);
             setUserData(null);
         }
-    }, [data]);
+    }, [data,refetch]);
 
 
     const [open, setOpen] = useState(false)
@@ -96,7 +96,7 @@ export default function Navbar() {
     const onLogin = async () => {
         try {
             const response = await axios.post('/api/auth/sign-in', loginUser);
-            console.log(loginUser);
+
 
             if (response.status === 200) {
                 refetch()
