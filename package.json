@@ -15,6 +15,7 @@
     "@nextui-org/system": "^2.2.6",
     "@nextui-org/theme": "^2.2.11",
     "@reduxjs/toolkit": "^2.2.7",
+    "@slack/web-api": "^7.5.0",
     "@studio-freight/react-lenis": "^0.0.47",
     "@tabler/icons-react": "^3.17.0",
     "axios": "^1.7.7",

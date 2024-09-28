@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { RiMenu2Fill } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from 'react-redux';
-
+import slack from "../../services/slack"
 import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Use usePathname instead of useRouter
 import { useSession, signIn, signOut, getProviders } from "next-auth/react"
@@ -82,10 +82,12 @@ export default function Navbar() {
             const response = await axios.post('/api/auth/sign-up', registerUser);
 
             if (response.status === 200) {
+
                 refetch()
                 setOpen(false)
                 // storeUserData(registerUser);
                 toast.success('Registeration Successfully!');
+
             }
         } catch (error) {
             toast.error("Error Occured!!")
@@ -99,6 +101,7 @@ export default function Navbar() {
 
 
             if (response.status === 200) {
+        
                 refetch()
                 // storeUserData(loginUser);
                 setOpen(false)

@@ -2,7 +2,7 @@ import connectDB from "../../../../utils/connectDB"
 import User from "../../../../models/user.models"
 import { NextRequest,NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
-
+import slack from "../../../../services/slack"
 import bcryptjs from "bcryptjs"
 connectDB()
 export const POST = async (NextRequest) => {
@@ -15,16 +15,18 @@ export const POST = async (NextRequest) => {
         }
 
         const user = await User.findOne({ email });
-        if (!email) {
+        if (!user) {
             return new Response("email does not exist", { status: 400 });
         }
+// console.log(user);
 
         const validPassword = await bcryptjs.compare(password, user.password);
         if (!validPassword) {
             return new Response("Incorrect Password", { status: 400 });
         }
-
+        await slack(`${user.name} Login`)
         const tokenData = {
+            name:user.name,
             email: user.email,
             id: user._id
         }

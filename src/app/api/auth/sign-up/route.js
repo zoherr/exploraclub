@@ -3,6 +3,7 @@ import User from "../../../../models/user.models"
 import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs"
 import jwt from 'jsonwebtoken';
+import slack from "../../../../services/slack"
 
 connectDB()
 export const POST = async (NextRequest) => {
@@ -31,12 +32,13 @@ export const POST = async (NextRequest) => {
 
         })
         const tokenData = {
+            name,
             email,
             enrollmentNo,
             semester
 
         }
-
+        await slack(`${user.name} Register`)
         const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1w' });
 
         await newUser.save();
