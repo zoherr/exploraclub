@@ -22,10 +22,10 @@
 
 import axios from 'axios';
 
- const slack = async (message) => {
+ const slack = async (channel,message) => {
   try {
     const response = await axios.post(`${process.env.DOMAIN}/api/slack`, {
-      channel: '#explora-club', // Your fixed Slack channel
+      channel, // Your fixed Slack channel
       text: message, // Custom message (like user login details)
     });
 

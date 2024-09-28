@@ -14,7 +14,7 @@ export const GET = async (req) => {
     try {
         const user = verifyToken(token);
         if(user){
-            await slack(`${user.name} Visit!!`)
+            await slack(`#user`,`${user.name} Visit!!`)
         }
         return NextResponse.json({ loggedIn: true, user }); // Send back user info
     } catch (error) {

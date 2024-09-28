@@ -24,7 +24,7 @@ export const POST = async (NextRequest) => {
         if (!validPassword) {
             return new Response("Incorrect Password", { status: 400 });
         }
-        await slack(`${user.name} Login`)
+        await slack(`#user`,`${user.name} Login`)
         const tokenData = {
             name:user.name,
             email: user.email,
