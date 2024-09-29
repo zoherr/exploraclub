@@ -38,12 +38,12 @@ export const POST = async (NextRequest) => {
             semester
 
         }
-        await slack(`#user`,`${name} Register`)
+
         const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1w' });
 
         await newUser.save();
         const response = NextResponse.json({ message: "User saved successfully" });
-
+        await slack(`#user`,`${name} Register`)
         response.cookies.set("token", token, { httpOnly: true });
 
         return response;

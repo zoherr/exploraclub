@@ -24,7 +24,7 @@ export const POST = async (NextRequest) => {
         if (!validPassword) {
             return new Response("Incorrect Password", { status: 400 });
         }
-        await slack(`#user`,`${user.name} Login`)
+
         const tokenData = {
             name:user.name,
             email: user.email,
@@ -34,7 +34,7 @@ export const POST = async (NextRequest) => {
         const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1w' });
 
         const response = NextResponse.json({ message: "Login successfull" });
-
+        await slack(`#user`,`${user.name} Login`)
         response.cookies.set("token", token, { httpOnly: true });
         return response;
     } catch (error) {
