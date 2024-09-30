@@ -53,8 +53,9 @@ const QRCodeScanner = () => {
             if (prevScannedData !== scannedData) {
             const response = await axios.post('/api/attendence', { qrCode: qrCode });
             setPrevScannedData(qrCode);// Wrap qrCode in an object
-            }
             toast.success("Scanned");
+            }
+
         } catch (error) {
             // console.log(error);
             // toast.error("Error");

@@ -14,9 +14,9 @@ const Home = () => {
 
     return (
         <div >
-            <div className=" min-w-[100%] min-h-screen pb-8">
+            <div className=" min-w-[100%]  pb-8">
 
-               
+
                 <HomePage />
                 <HomeMarquee />
                 <Vision />
