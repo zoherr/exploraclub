@@ -1,3 +1,4 @@
+"use client"
 import React from 'react'
 import QRCodeScanner from "../../../components/QRCodeScanner"
 import AdminProtected from "../../../utils/AdminProtected";
