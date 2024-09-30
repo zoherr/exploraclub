@@ -36,22 +36,25 @@ const QRCodeScanner = () => {
                 if (code && !isScanning) {
                     setIsScanning(true);  // Prevent multiple scans
                     setScannedData(code.data);
-                    if (prevScannedData !== scannedData) {
+
                         markAttendance(code.data);
-                    }
+
 
                     setLastScannedTime(currentTime);
                   }
                 }
                 requestAnimationFrame(tick);
               };
-            }, [isScanning,lastScannedTime,prevScannedData,scannedData]);
+            }, [isScanning,lastScannedTime,scannedData]);
 
     const markAttendance = async (qrCode) => {
         try {
-            setPrevScannedData(qrCode);
-            const response = await axios.post('/api/attendence', { qrCode: qrCode }); // Wrap qrCode in an object
-            // toast.success("Scanned");
+
+            if (prevScannedData !== scannedData) {
+            const response = await axios.post('/api/attendence', { qrCode: qrCode });
+            setPrevScannedData(qrCode);// Wrap qrCode in an object
+            }
+            toast.success("Scanned");
         } catch (error) {
             // console.log(error);
             // toast.error("Error");
