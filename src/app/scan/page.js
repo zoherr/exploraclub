@@ -1,11 +1,10 @@
 import React from 'react'
-import Navbar from '../../components/navbar/page'
+import QRCodeScanner from '../../components/QRCodeScanner'
 
 const page = () => {
   return (
     <div>
-         {/* <Navbar /> */}
-      Hi
+<QRCodeScanner/>
     </div>
   )
 }

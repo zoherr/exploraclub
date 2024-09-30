@@ -34,7 +34,8 @@ const userSchema = new mongoose.Schema({
         enum: ['user', 'admin'],
         required: true,
         default: 'user'
-      }
+      },
+      events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
 
 }, { timestamps: true })
 const User = mongoose.models.users || mongoose.model("users", userSchema)

@@ -5,7 +5,7 @@ const page = ({params}) => {
 
   return (
     <div>
-             <Navbar />
+             {/* <Navbar /> */}
 <p>{params.id}</p>
     </div>
   )

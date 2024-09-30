@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Use usePathname instead of useRouter
 import { useSession, signIn, signOut, getProviders } from "next-auth/react"
 import toast, { Toaster } from 'react-hot-toast';
+import { setUser,logout } from "../../redux/userSlice";
 import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 export default function Navbar() {
     const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function Navbar() {
     const handleLogout = async () => {
         try {
             await logout().unwrap();
-
+            setUserData(null)
             toast.success('Logout successful');
             setIsUserLoggedIn(false)
             // window.location.reload();
@@ -33,9 +34,10 @@ export default function Navbar() {
         }
 
     };
+
     useEffect(() => {
         refetch()
-    }, [refetch])
+    }, [refetch,isUserLoggedIn,userData])
 
     const [registerUser, setRegisterUser] = useState({
         name: "",
@@ -54,16 +56,17 @@ export default function Navbar() {
 
         if (data && data.loggedIn) {
             refetch()
-            // dispatch(setUser(data));
             setIsUserLoggedIn(true);
-
             setUserData(data.user);
+            dispatch(setUser(data.user))
+
+
         } else {
             refetch()
             setIsUserLoggedIn(false);
             setUserData(null);
         }
-    }, [data,refetch]);
+    }, [data,refetch,dispatch]);
 
 
     const [open, setOpen] = useState(false)
@@ -80,14 +83,11 @@ export default function Navbar() {
     const onSignup = async () => {
         try {
             const response = await axios.post('/api/auth/sign-up', registerUser);
-
             if (response.status === 200) {
-
-                refetch()
                 setOpen(false)
                 // storeUserData(registerUser);
                 toast.success('Registeration Successfully!');
-
+                setIsUserLoggedIn(true);
             }
         } catch (error) {
             toast.error("Error Occured!!")
@@ -101,8 +101,9 @@ export default function Navbar() {
 
 
             if (response.status === 200) {
-        
-                refetch()
+                setIsUserLoggedIn(true);
+
+
                 // storeUserData(loginUser);
                 setOpen(false)
                 toast.success(`Welcome!!`);
@@ -126,7 +127,10 @@ export default function Navbar() {
                     />
                 </div>
 
-                <div className=" flex gap-7">{
+                <div className=" flex gap-7">
+
+                    {
+
                     navbarItem.map((item, i) => (
                         <Link href={item.path} key={i}>
                             <p style={{
@@ -135,7 +139,12 @@ export default function Navbar() {
                             }} className="NeueMontreal-Regular text-white font-normal text-lg hover:text-[#4AFAAB] cursor-pointer"  >{item.name} </p> </Link>
                     )
                     )
-                }</div>
+                }
+                { userData && userData?.role === "admin" &&
+  <Link href="/admin">
+  <p className="NeueMontreal-Regular text-white font-normal text-lg hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
+}
+                </div>
                 {isUserLoggedIn ? (<>
                     <div className="flex gap-6">
                         {/* <button className="text-[#4AFAAB] font-semibold">Login</button> */}
@@ -201,6 +210,10 @@ export default function Navbar() {
                         )
                         )
                     }
+                    { userData && userData?.role === "admin" &&
+  <Link href="/admin">
+  <p className=" NeueMontreal-Regular text-white text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
+}
                 </div>
             </>}
             {

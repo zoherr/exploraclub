@@ -16,7 +16,7 @@ const Home = () => {
         <div >
             <div className=" min-w-[100%] min-h-screen pb-8">
 
-                <Navbar />
+               
                 <HomePage />
                 <HomeMarquee />
                 <Vision />
