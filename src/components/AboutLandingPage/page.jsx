@@ -17,7 +17,7 @@ const AboutLandingPage = () => {
                         return (
                             <>
                                 {/* Desktop */}
-                                <div className="sm:flex hidden items-center">
+                                <div className="sm:flex hidden items-center" key={index}>
                                     {index === 1 ? (
                                         <motion.div
                                             initial={{ width: 0, marginRight: 0 }}

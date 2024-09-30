@@ -28,7 +28,9 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/utils/connectDB.js"  ],
+, "src/utils/connectDB.js",
+"src/@types/**/*.d.ts" // Add this line to include custom type definitions
+],
   "exclude": [
     "node_modules"
   ]

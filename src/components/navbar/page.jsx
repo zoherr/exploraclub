@@ -150,7 +150,7 @@ export default function Navbar() {
                 {isUserLoggedIn ? (<>
                     <div className="flex gap-6">
                         {/* <button className="text-[#4AFAAB] font-semibold">Login</button> */}
-                        <button onClick={handleLogout} className=" border border-[#4AFAAB] text-[#4AFAAB] font-semibold px-7 py-2 rounded-full"><LuLogOut /></button>
+                        <button onClick={handleLogout} className=" border border-[#004D43] text-[#004D43] font-semibold px-7 py-2 rounded-full"><LuLogOut /></button>
 
                     </div>
                 </>) : (<>

@@ -15,9 +15,9 @@ function HomePage() {
 
             <div className="text-[#16423C]  FoundersGrotesk-Semibold text-center pt-[5rem] sm:pt-[6rem] justify-center flex  ">
                 <div className="uppercase text-6xl sm:text-[15rem] font-semibold FoundersGrotesk-Semibold ">
-                    <p className=''>Explora   Club</p>
-                    <div className="uppercase  sm:text-[7.5rem] flex pt-3 justify-center items-center ">
-                        <p>Innovate, Learn, and Lead!</p>
+                    <p className='text-[5rem] sm:text-[15rem]'>Explora   Club</p>
+                    <div className="uppercase text-[2.5rem] sm:text-[7.5rem] flex pt-3 justify-center items-center ">
+                        <p>Innovate, Learn,  and Lead!</p>
 
                     </div>
                 </div>

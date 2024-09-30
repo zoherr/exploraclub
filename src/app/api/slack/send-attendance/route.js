@@ -2,54 +2,84 @@ import { NextResponse } from 'next/server';
 import { WebClient } from '@slack/web-api';
 import fs from 'fs';
 import path from 'path';
-import User from '../../../../models/user.models'; // Adjust according to your user model path
-import Event from '../../../../models/event.model'; // Adjust according to your event model path
 import Register from '../../../../models/register.models';
-
+import User from "../../../../models/user.models.js"
+import Event from '../../../../models/event.model';
+import connectDB from "../../../../utils/connectDB";
 const slackToken = process.env.SLACK_BOT_TOKEN;
 const web = new WebClient(slackToken);
-
+connectDB()
 const generateAttendanceFile = async (attendanceDetails) => {
-  const filePath = path.join(__dirname, 'attendance.csv');
+    const filePath = path.join(__dirname, 'attendance.csv');
 
-  // Prepare CSV content
-  const fileContent = attendanceDetails.map(user =>
-    `${user.name}, ${user.enrollmentNo}, ${user.email}, ${user.attendance}`
-  ).join('\n');
+    // Use Promise.all to wait for all asynchronous operations to complete
+    const fileContent = await Promise.all(attendanceDetails.map(async (registration) => {
+      // Check if the user has team members
+      let teamData = '';
+      const user = await User.findById(registration.user);
 
-  // Add CSV headers
-  const csvWithHeaders = `Name, Enrollment No, Email, Attendance\n${fileContent}`;
+      // Prepare to format the team members
+      if (registration.members.length > 0) {
+        // Fetch member details using User.findById for each member ID
+        const membersDetails = await Promise.all(
+          registration.members.map(async (memberId) => {
+            const member = await User.findById(memberId);
+            return member ? `${member.name}, ${member.email}` : 'N/A, N/A'; // Fallback if member not found
+          })
+        );
 
-  await fs.promises.writeFile(filePath, csvWithHeaders);
+        // Join members' details with the appropriate formatting
+        teamData = membersDetails.map(memberDetail => `,,, , ${memberDetail}`).join('\n');
+      }
 
-  return filePath;
-};
+      // Return primary user details followed by team members
+      return `${user.name}, ${user.enrollmentNo}, ${registration.semester}, ${user.email}, , , ${registration.attendance}\n${teamData}`;
+    }));
 
+    // Join all the file contents
+    const joinedFileContent = fileContent.join('\n\n');
+
+    // Add headers to the CSV
+    const csvWithHeaders = `Name, Enrollment No, Semester, Email, Team Member Names, Team Members Email, Attendance\n${joinedFileContent}`;
+
+    // Write CSV to file
+    await fs.promises.writeFile(filePath, csvWithHeaders);
+
+    return filePath;
+  };
+
+
+
+// POST handler for generating the attendance sheet
 export async function POST(req) {
   const { eventId } = await req.json();
 
   try {
-    // Find the event by its ID and populate registered and attendance fields
+    // Fetch the event by eventId and populate registerId
     const event = await Event.findById(eventId)
     if (!event) {
       return NextResponse.json({ success: false, message: 'Event not found' }, { status: 404 });
     }
 
-    // Get attendance and registration details
-    const attendanceData = await Promise.all(
-      event.registered.map(async (userId) => {
-        const user = await User.findById(userId);
-        const isPresent = event.attendance.includes(userId);
-        return {
-          name: user.name,
-          enrollmentNo: user.enrollmentNo,
-          email: user.email,
-          attendance: isPresent ? 'Yes' : 'No',
-        };
-      })
-    );
+    // Get all registrations for the event and populate user and members
+    const registrations = await Register.find({ _id: { $in: event.registerId } })
 
-    // Generate the attendance file
+
+    // Prepare attendance data
+    const attendanceData = registrations.map(registration => {
+      // Get the primary user details and their attendance
+      const isPresent = registration.attendance ? 'Yes' : 'No';
+
+      // Return the details in the format needed
+      return {
+        user: registration.user,
+        semester: registration.semester,
+        members: registration.members,  // Get populated member details directly
+        attendance: isPresent,
+      };
+    });
+
+    // Generate the attendance CSV file
     const filePath = await generateAttendanceFile(attendanceData);
 
     // Upload the file to Slack
