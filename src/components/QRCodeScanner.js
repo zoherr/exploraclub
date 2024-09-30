@@ -7,6 +7,7 @@ import axios from 'axios';
 const QRCodeScanner = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const [prevScannedData, setPrevScannedData] = useState(null);
     const [scannedData, setScannedData] = useState(null);
     const [isScanning, setIsScanning] = useState(false); // Add scan lock
     const scanInterval  = 2000; // 2 seconds delay to prevent multiple scans
@@ -35,23 +36,25 @@ const QRCodeScanner = () => {
                 if (code && !isScanning) {
                     setIsScanning(true);  // Prevent multiple scans
                     setScannedData(code.data);
-                    markAttendance(code.data);
-                    setLastScannedTime(currentTime);
-                    // Delay the next scan to avoid duplicate scans
+                    if (prevScannedData !== scannedData) {
+                        markAttendance(code.data);
+                    }
 
+                    setLastScannedTime(currentTime);
                   }
                 }
                 requestAnimationFrame(tick);
               };
-            }, [isScanning,lastScannedTime]);
+            }, [isScanning,lastScannedTime,prevScannedData,scannedData]);
 
     const markAttendance = async (qrCode) => {
         try {
+            setPrevScannedData(qrCode);
             const response = await axios.post('/api/attendence', { qrCode: qrCode }); // Wrap qrCode in an object
-            toast.success("Scanned");
+            // toast.success("Scanned");
         } catch (error) {
-            console.log(error);
-            toast.error("Error");
+            // console.log(error);
+            // toast.error("Error");
         } finally {
             // Allow scanning again after the request completes
             setTimeout(() => {
