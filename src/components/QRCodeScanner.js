@@ -47,9 +47,7 @@ const QRCodeScanner = () => {
                     onError={handleError}
                     onScan={handleScan}
                     style={{ width: '80%', height: 'auto',borderRadius: "20px"}}
-                    constraints={{
-                        facingMode: { exact: 'environment' }, // This should enable the rear camera
-                      }}
+                   facingMode="rear"
                 />
             </div>
         </div>
