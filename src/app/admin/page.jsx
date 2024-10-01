@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { MdOutlineDocumentScanner } from "react-icons/md";
 import { IoCreate } from "react-icons/io5";
 import { VscTools } from "react-icons/vsc";
+import { MdAddAPhoto } from "react-icons/md";
 
 const page = () => {
 
@@ -49,6 +50,15 @@ const page = () => {
                             <div className="my-5  px-5 bg-[#16423C] py-5 text-white rounded-full">
                                 <h1 className="text-xl flex items-center gap-5 justify-center" >Manage Event
                                     <VscTools className="text-2xl" />
+
+                                </h1>
+                            </div>
+                        </Link>
+
+                        <Link href="/admin/add-images" className="">
+                            <div className="my-5  px-5 bg-[#16423C] py-5 text-white rounded-full">
+                                <h1 className="text-xl flex items-center gap-5 justify-center" >Add Images
+                                    <MdAddAPhoto className="text-2xl" />
 
                                 </h1>
                             </div>

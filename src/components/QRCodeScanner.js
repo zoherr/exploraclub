@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 // import QrReader  from 'react-qr-scanner';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+
 const QrReader = dynamic(() => import('react-qr-scanner'), { ssr: false });
 
 const QRCodeScanner = () => {

@@ -10,7 +10,7 @@ function HomePage() {
     const words = ["better", "cute", "beautiful", "modern"];
 
     return (
-        <div   className='z-[999] sm:mt-4 mb-6 sm:mb-0 mt-5 sm:px-10  sm:min-h-screen '>
+        <div className='z-[999] sm:mt-4 mb-6 sm:mb-0 mt-5 sm:px-10  sm:min-h-screen '>
 
 
             <div className="text-[#16423C]  FoundersGrotesk-Semibold text-center pt-[5rem] sm:pt-[6rem] justify-center flex  ">
@@ -42,9 +42,9 @@ function HomePage() {
                 />
 
             </div> */}
-             {/* Desktop */}
-{/* Mobile */}
-{/* <div className="flex sm:hidden gap-4 object-cover justify-center items-center mt-[2rem] ">
+            {/* Desktop */}
+            {/* Mobile */}
+            {/* <div className="flex sm:hidden gap-4 object-cover justify-center items-center mt-[2rem] ">
 
                 <Image
                     className='rounded-xl object-cover w-[92%] h-[17rem]'

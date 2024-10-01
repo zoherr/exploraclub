@@ -7,11 +7,12 @@ import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
 
-connectDB();
+
 export const POST = async (req) => {
-    const { email, eventId, members } = await req.json();
+    await connectDB();
+    const { userId, eventId, members } = await req.json();
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findById( userId );
         if (!user) {
             return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
         }
@@ -53,9 +54,9 @@ export const POST = async (req) => {
         event.registered.push(user._id);
         const memberUpdatePromises = validMemberIds.map(async (memberId) => {
             const member = await User.findById(memberId);
-            if (member ) {
+            if (member) {
                 if(event.registered.includes(memberId)){
-                    return NextResponse.json({ success: false, message: "User already registered for this event" }, { status: 400 });
+                    return NextResponse.json({ success: false, message: "Member already registered for this event" }, { status: 400 });
                 }
                 event.registered.push(memberId);
                 member.events.push(eventId);
@@ -79,11 +80,11 @@ export const POST = async (req) => {
 
         // Send email notifications as before...
         const transporter = nodemailer.createTransport({
-            host: 'smtp.gmail.com', // Replace with your SMTP server
+            host:  "smtp.gmail.com", // Replace with your SMTP server
             port: 465, // SMTP port
             auth: {
-                user: 'workforzoher@gmail.com', // Your email
-                pass: 'aajxdyhxzovcqjyn', // Your email password
+                user: 'itmbuexploraclub@gmail.com', // Your email
+                pass: process.env.SMTP_PASSWORD,
             },
         });
 

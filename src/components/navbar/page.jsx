@@ -15,6 +15,8 @@ import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 import { LuLogOut } from "react-icons/lu";
 
 export default function Navbar() {
+    const [loading, setloading] = useState(false);
+
     const dispatch = useDispatch();
 
     const [logout] = useLogoutMutation();

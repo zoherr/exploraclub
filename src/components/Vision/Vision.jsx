@@ -7,7 +7,7 @@ const Vision = () => {
             <p className='NeueMontreal-Regular px-6 sm:px-20 text-lg sm:text-4xl pb-14 border-[#16423C] border-b-[1px]'>
                 ITMBU <span className='underline'>Explora club</span> is more than just a name; it&apos;s a vibrant platform where tech enthusiasts like you and me come together to explore the vast and dynamic landscape of computer science applications. It&apos;s a place where we embark on a journey to push the boundaries of innovation, to learn continually, and to make a lasting impact on society through&nbsp;technology.
             </p>
-            <div className='sm:flex px-6 sm:px-20 pt-[2rem] pb-14 border-[#16423C] mb-16 border-b-[1px]'>
+            <div className='sm:flex px-6 sm:px-20 pt-[2rem] pb-14 border-[#16423C] mb-16 border-b-[0px]'>
                 <div className="sm:w-[50%]">
                     <p className='NeueMontreal-Regular text-3xl '>Objectives:</p>
                 </div>

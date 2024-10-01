@@ -9,14 +9,15 @@ interface ProtectedProps {
     children?: React.ReactNode;
 }
 
-export default function AdminProtected({ children }: ProtectedProps) {
+export default function VolunteerProtected({ children }: ProtectedProps) {
     const  user  = useSelector((state: any) => state.user.user);
 
     if (user) {
-        const isAdmin = user?.role === "admin";
+        const isAdmin = user?.role === "volunteer" || user?.role === "admin";
         return isAdmin ? children : redirect("/");
     } else {
         redirect("/");
     }
+
 
 }

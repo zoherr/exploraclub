@@ -1,0 +1,17 @@
+.masonryGrid {
+    display: flex;
+    /* margin-left: -30px; */
+    gap:10px;
+    width: auto;
+  }
+
+  .masonryGridColumn {
+    /* padding-left: 10px; */
+    /* padding-right: 10px; */
+    background-clip: padding-box;
+  }
+
+  .imageItem {
+    margin-bottom: 10px;
+
+  }

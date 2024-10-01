@@ -1,14 +1,14 @@
 "use client"
 import React from 'react'
 import QRCodeScanner from "../../../components/QRCodeScanner"
-import AdminProtected from "../../../utils/AdminProtected";
+import VolunteerProtected from "../../../utils/VolunteerProtected";
 
 const page = () => {
     return (
         <div>
-            <AdminProtected>
+            <VolunteerProtected>
                 <QRCodeScanner />
-            </AdminProtected>
+            </VolunteerProtected>
         </div>
     )
 }

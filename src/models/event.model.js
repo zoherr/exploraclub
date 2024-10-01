@@ -4,6 +4,7 @@ import { type } from "os";
 const eventSchema = new mongoose.Schema({
     name: String,
     description: String,
+    shortDesc: String,
     semester: Number,
     teamMember: {
         type: Number,
@@ -20,6 +21,8 @@ const eventSchema = new mongoose.Schema({
     },
     eventImages: [String],
     image: String,
+    winner:String,
+    feedback:String,
     isCompleted: { type: Boolean, default: false },
     registered: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
     attendance: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
