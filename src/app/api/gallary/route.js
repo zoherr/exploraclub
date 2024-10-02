@@ -23,6 +23,8 @@ export const POST = async (req) => {
             status: 201,
         });
     } catch (error) {
+        slack(`#error`, `Error uploading images: ${error.message}`);
+
         console.error("Error uploading images:", error);
         return new Response(JSON.stringify({ message: "Error uploading images" }), {
             status: 500,
@@ -36,6 +38,7 @@ export const GET = async () => {
       const galleries = await Gallary.find({});
       return NextResponse.json({ success: true, data: galleries }, { status: 200 });
     } catch (error) {
+        slack(`#error`, `Error Getting Gallary: ${error.message}`);
       return NextResponse.json({ success: false, message: 'Error fetching gallery items' }, { status: 500 });
     }
   };

@@ -44,10 +44,17 @@ export const POST = async (NextRequest) => {
         await newUser.save();
         const response = NextResponse.json({ message: "User saved successfully" });
         await slack(`#user`,`${name} Register`)
-        response.cookies.set("token", token, { httpOnly: true });
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: true, // Ensure you have HTTPS in production
+            sameSite: 'Strict',
+            maxAge: 365 * 24 * 60 * 60 * 1000 // 1 year in milliseconds
+        });
 
         return response;
     } catch (error) {
+        slack(`#error`, `Error User Register: ${error.message}`);
+
         console.log(error);
     }
 }

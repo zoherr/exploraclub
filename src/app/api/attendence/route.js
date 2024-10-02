@@ -26,12 +26,13 @@ export const POST = async (req) => {
         const event = await Event.findById(register.event);
         event.attendance.push(user._id)
         await event.save()
-        
+
         slack(`#event-attendence`, `${user.name} Scanned`);
         await register.save();
 
         return new Response(JSON.stringify({ message: "Attendance marked successfully" }), { status: 200 });
     } catch (error) {
+        slack(`#error`, `Error marking attendance: ${error.message}`);
         console.error("Error marking attendance:", error);
         return new Response(JSON.stringify({ error: "An error occurred while marking attendance" }), { status: 500 });
     }

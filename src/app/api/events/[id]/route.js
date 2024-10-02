@@ -3,10 +3,7 @@ import connectDB from "../../../../utils/connectDB"
 import Event from "../../../../models/event.model"
 connectDB();
 export const GET = async (req, { params }) => {
-
-
     const { id } = params; // Extracting ID from params
-
     try {
       // Find the specific event by ID
       const event = await Event.findById(id);
@@ -23,6 +20,8 @@ export const GET = async (req, { params }) => {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+        slack(`#error`, `Error While Fetching Data From Event ID : ${error.message}`);
+
       return new Response(JSON.stringify({ success: false, message: error.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -54,6 +53,8 @@ export const GET = async (req, { params }) => {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+        slack(`#error`, `Error While Update Data From Event ID : ${error.message}`);
+
       return new Response(JSON.stringify({ success: false, message: error.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -81,6 +82,8 @@ export const GET = async (req, { params }) => {
         headers: { 'Content-Type': 'application/json' },
       });
     } catch (error) {
+        slack(`#error`, `Error While Delete Data From Event ID : ${error.message}`);
+
       return new Response(JSON.stringify({ success: false, message: error.message }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },

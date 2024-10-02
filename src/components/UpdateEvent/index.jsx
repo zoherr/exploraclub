@@ -110,6 +110,9 @@ const UpdateEvent = ({id}) => {
     }
   };
 
+  if (loading) {
+    return <Loader />; // Loading state
+}
 
   return (
     <div className="mt-5 mb-16 NeueMontreal-Regular px-8 sm:px-16">

@@ -13,6 +13,7 @@ export async function GET() {
         // Return the response
         return response;
     } catch (error) {
+        slack(`#error`, `Error Login: ${error.message}`);
         // Return an error response with status 500
         return NextResponse.json({ error: error.message }, { status: 200 });
     }

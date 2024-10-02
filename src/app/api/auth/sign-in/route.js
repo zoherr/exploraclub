@@ -32,13 +32,19 @@ export const POST = async (NextRequest) => {
             role:user.role
         }
 
-        const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1w' });
+        const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1y' });
 
         const response = NextResponse.json({ message: "Login successfull" });
         await slack(`#user`,`${user.name} Login`)
-        response.cookies.set("token", token, { httpOnly: true });
+        response.cookies.set("token", token, {
+            httpOnly: true,
+            secure: true, // Ensure you have HTTPS in production
+            sameSite: 'Strict',
+            maxAge: 365 * 24 * 60 * 60 * 1000 // 1 year in milliseconds
+        });
         return response;
     } catch (error) {
+        slack(`#error`, `Error User Login: ${error.message}`);
         console.log("Error", error.message);
         return new Response("Something went wrong ", { status: 500 });
     }

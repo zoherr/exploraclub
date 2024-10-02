@@ -15,7 +15,8 @@ import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 import { LuLogOut } from "react-icons/lu";
 
 export default function Navbar() {
-    const [loading, setloading] = useState(false);
+    const [loginLoading, setLoginLoading] = useState(false);
+    const [registerLoading, setRegisterLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -85,6 +86,8 @@ export default function Navbar() {
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const onSignup = async () => {
+        setRegisterLoading(true)
+
         try {
             const response = await axios.post('/api/auth/sign-up', registerUser);
             if (response.status === 200) {
@@ -92,14 +95,17 @@ export default function Navbar() {
                 // storeUserData(registerUser);
                 toast.success('Registeration Successfully!');
                 setIsUserLoggedIn(true);
+                setRegisterLoading(false)
             }
         } catch (error) {
+            setRegisterLoading(false)
             toast.error("Error Occured!!")
             // console.log(error);
         }
 
     }
     const onLogin = async () => {
+        setLoginLoading(true)
         try {
             const response = await axios.post('/api/auth/sign-in', loginUser);
 
@@ -112,8 +118,9 @@ export default function Navbar() {
                 setOpen(false)
                 toast.success(`Welcome!!`);
             }
+            setLoginLoading(false)
         } catch (error) {
-
+            setLoginLoading(false)
             toast.error("Error Occured!!")
             // console.log(error);
         }
@@ -237,7 +244,7 @@ export default function Navbar() {
                                 <input value={loginUser.password} placeholder="pass@123" type="password" name="password" id="password" className={`w-full text-[#0A1D26]  bg-white border rounded h-[40px] px-2 outline-none mt-[10px] `} onChange={(e) => setLoginUser({ ...loginUser, password: e.target.value })} />
                                 <div className="w-full mt-5">
 
-                                    <button onClick={onLogin} type="submit" className={`mt-10  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>Login</button>
+                                    <button onClick={onLogin} type="submit" className={`mt-10  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>{loginLoading ? "Loading..." : "Login"}</button>
                                 </div>
                                 <h5 className="text-center pt-4 tet-[14px] text-white">
                                     Not have any account?{""}
@@ -286,7 +293,8 @@ export default function Navbar() {
                                         </select> </div></div>
                                 <div className="w-full mt-5">
 
-                                    <button onClick={onSignup} type="submit" className={`mt-10  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>Register</button>
+                                    <button onClick={onSignup} type="submit" className={`mt-10  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>                                {registerLoading ? "Loading..." : "Register"}
+                                    </button>
                                 </div>
                                 <h5 className="text-center pt-4 tet-[14px] text-white">
                                     have any account?{""}

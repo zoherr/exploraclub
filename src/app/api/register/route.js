@@ -7,7 +7,7 @@ import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
 
-
+connectDB();
 export const POST = async (req) => {
     await connectDB();
     const { userId, eventId, members } = await req.json();
@@ -121,6 +121,7 @@ export const POST = async (req) => {
         return NextResponse.json({ success: true, message: "Registration successful and QR code sent", qr: qrCodeUrl, qrImage: qrData }, { status: 201 });
 
     } catch (error) {
+        slack(`#error`, `Error Event Register: ${error.message}`)
         console.error(error);
         return NextResponse.json({ success: false, message: "An error occurred", error: error.message }, { status: 500 });
     }

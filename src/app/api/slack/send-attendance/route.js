@@ -35,7 +35,7 @@ const generateAttendanceCSV = async (attendanceDetails) => {
             const membersDetails = await Promise.all(
                 registration.members.map(async (memberId) => {
                     const member = await User.findById(memberId);
-                    return member ? { name: member.name, email: member.email } : { name: 'N/A', email: 'N/A' };
+                    return member ? { name: member.name, email: member.email } : { name: '', email: '' };
                 })
             );
 
@@ -52,8 +52,8 @@ const generateAttendanceCSV = async (attendanceDetails) => {
             semester: registration.semester,
             email: user.email,
             attendance: registration.attendance,
-            teamMemberNames: teamData.map(td => td.teamMemberNames).join('; '),
-            teamMembersEmail: teamData.map(td => td.teamMembersEmail).join('; '),
+            teamMemberNames: teamData.map(td => td.teamMemberNames).join('\n'),
+            teamMembersEmail: teamData.map(td => td.teamMembersEmail).join('\n'),
         };
     }));
 
@@ -100,6 +100,7 @@ export async function POST(req) {
 
         return NextResponse.json({ success: true, message: 'File sent to Slack', attendanceDetails: attendanceData });
     } catch (error) {
+        slack(`#error`, `Error Sending Attendance: ${error.message}`)
         console.error('Error:', error);
         return NextResponse.json({ success: false, message: 'Failed to send file to Slack', error: error.message }, { status: 500 });
     }

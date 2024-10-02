@@ -4,13 +4,21 @@ import React, { useState } from 'react';
 // import QrReader  from 'react-qr-scanner';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+const isMobileImport = dynamic(() => import('react-device-detect').then((mod) => mod.isMobile), { ssr: false });
 
 const QrReader = dynamic(() => import('react-qr-scanner'), { ssr: false });
 
 const QRCodeScanner = () => {
+    const [isMobile, setIsMobile] = useState(false); // State to store if it's a mobile device
+
     const [scannedData, setScannedData] = useState(null);
     const [scannedCodesSet, setScannedCodesSet] = useState(new Set()); // Store unique scanned codes
-
+    useEffect(() => {
+        // Dynamically load the `isMobile` value from the module
+        isMobileImport.then((mobile) => {
+            setIsMobile(mobile);
+        });
+    }, []);
     const handleScan = async (data) => {
         if (data) {
             const qrCode = data.text;
@@ -47,7 +55,7 @@ const QRCodeScanner = () => {
                     onError={handleError}
                     onScan={handleScan}
                     style={{ width: '80%', height: 'auto',borderRadius: "20px"}}
-                   facingMode="rear"
+                   facingMode={isMobile ? `back` : `rear`}
                 />
             </div>
         </div>
