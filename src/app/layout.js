@@ -1,5 +1,6 @@
 "use client"
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/react"
 import localFont from "next/font/local";
 import "./globals.css";
 import toast, { Toaster } from 'react-hot-toast';
@@ -35,7 +36,7 @@ export default function RootLayout({ children }) {
                     <Navbar />
                     {children}
                     <SpeedInsights />
-
+<Analytics/>
                     {/* <  Footer /> */}
                 </Provider>
             </body>

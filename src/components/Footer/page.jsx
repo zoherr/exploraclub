@@ -2,8 +2,8 @@ import React from "react";
 
 function Footer() {
   return (
-    <div data-scroll data-scroll-speed=".10">
-      <div className="sm:flex pb-12 pt-28 px-8 NeueMontreal-Regular bg-[#f1f1f1] sm:px-16 text-[#212121]">
+    <div data-scroll data-scroll-speed=".10" className="rounded-tl-lg ">
+      <div className="sm:flex pb-12 pt-28 px-8 NeueMontreal-Regular bg-[#212121] sm:px-16 text-[#f1f1f1]">
         <div className="sm:w-1/2">
           <p className="FoundersGrotesk-Semibold uppercase sm:text-[10rem] leading-[8.5vw]">
           Innovate, Learn, and Lead!
@@ -43,11 +43,11 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex justify-between bg-[#f1f1f1] pb-10 sm:px-16 ">
+      <div className="flex justify-between bg-[#212121] pb-10 sm:px-16 ">
         <h1 className="font-bold text-2xl   NeueMontreal-Regular">
           Zoher R.
         </h1>
-        <div className="gap-2 sm:pl-[16.8rem] text-[#212121] hidden sm:flex items-center ">
+        <div className="gap-2 sm:pl-[16.8rem] text-[#f1f1f1] hidden sm:flex items-center ">
           {["© Zoher R", "2024."].map((item, key) => (
             <a
               href={`#${item.toLowerCase()}`}

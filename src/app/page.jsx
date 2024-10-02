@@ -10,7 +10,7 @@ import Events from "../components/Events/Events";
 import HomePage from "../components/HomePage/page";
 
 import Loader from "../components/Loading"
-
+import Footer from "../components/Footer/page"
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -19,7 +19,7 @@ const Home = () => {
         // Set a timeout for 5 seconds
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 5000); // 5000 milliseconds = 5 seconds
+        }, 2500); // 5000 milliseconds = 5 seconds
 
         // Cleanup the timeout when the component unmounts
         return () => clearTimeout(timer);
@@ -29,7 +29,7 @@ const Home = () => {
     }
     return (
         <div >
-            <div className=" min-w-[100%]  pb-8">
+            <div className=" min-w-[100%]  ">
 
 
                 <HomePage />

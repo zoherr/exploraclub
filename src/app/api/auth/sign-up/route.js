@@ -6,9 +6,9 @@ import jwt from 'jsonwebtoken';
 import slack from "../../../../services/slack"
 
 connectDB()
-export const POST = async (NextRequest) => {
+export const POST = async (req) => {
     try {
-        const body = await NextRequest.json();
+        const body = await req.json();
         // console.log(body);
         const { name, email, password, enrollmentNo, semester } = body;
 
@@ -39,7 +39,7 @@ export const POST = async (NextRequest) => {
 
         }
 
-        const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1w' });
+        const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1y' });
 
         await newUser.save();
         const response = NextResponse.json({ message: "User saved successfully" });
