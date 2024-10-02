@@ -19,7 +19,7 @@ const Home = () => {
         // Set a timeout for 5 seconds
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 2000); // 5000 milliseconds = 5 seconds
+        }, 5000); // 5000 milliseconds = 5 seconds
 
         // Cleanup the timeout when the component unmounts
         return () => clearTimeout(timer);

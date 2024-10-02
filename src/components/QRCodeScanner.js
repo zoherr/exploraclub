@@ -1,24 +1,24 @@
 "use client";
-import dynamic from 'next/dynamic'
-import React, { useState } from 'react';
-// import QrReader  from 'react-qr-scanner';
+import dynamic from 'next/dynamic';
+import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
-const isMobileImport = dynamic(() => import('react-device-detect').then((mod) => mod.isMobile), { ssr: false });
+import { isMobile } from 'react-device-detect';
+// Dynamically import 'isMobile' from 'react-device-detect' and add error handling
 
-const QrReader = dynamic(() => import('react-qr-scanner'), { ssr: false });
+
+// Dynamically import 'QrReader'
+const QrReader = dynamic(() => import('react-qr-scanner'), {
+  ssr: false,
+  loading: () => <p>Loading QR Scanner...</p>, // Show loading fallback while QrReader is being imported
+});
 
 const QRCodeScanner = () => {
-    const [isMobile, setIsMobile] = useState(false); // State to store if it's a mobile device
-
     const [scannedData, setScannedData] = useState(null);
     const [scannedCodesSet, setScannedCodesSet] = useState(new Set()); // Store unique scanned codes
-    useEffect(() => {
-        // Dynamically load the `isMobile` value from the module
-        isMobileImport.then((mobile) => {
-            setIsMobile(mobile);
-        });
-    }, []);
+
+ 
+
     const handleScan = async (data) => {
         if (data) {
             const qrCode = data.text;
@@ -31,31 +31,29 @@ const QRCodeScanner = () => {
     };
 
     const handleError = (err) => {
-        // console.error(err);
         toast.error("Error scanning QR code");
     };
 
     const markAttendance = async (qrCode) => {
         setScannedCodesSet(prevSet => new Set(prevSet).add(qrCode)); // Add the QR code to the set
         try {
-            const response = await axios.post('/api/attendence', { qrCode:qrCode });
+            await axios.post('/api/attendence', { qrCode });
             toast.success("Attendance marked for QR Code");
         } catch (error) {
-            // console.error("Error during attendance marking:", error);
             toast.error("Error marking attendance: " + (error.response ? error.response.data.message : "Unknown error"));
         }
     };
 
     return (
         <div>
-            <h2 className='text-center mt-9'>Scan the QR Code</h2>
-            {scannedData && <p className='text-center mt-9'>Last Scanned QR Code: {scannedData}</p>}
+            <h2 className="text-center mt-9">Scan the QR Code</h2>
+            {scannedData && <p className="text-center mt-9">Last Scanned QR Code: {scannedData}</p>}
             <div className="flex justify-center rounded-2xl overflow-hidden my-10">
                 <QrReader
                     onError={handleError}
                     onScan={handleScan}
-                    style={{ width: '80%', height: 'auto',borderRadius: "20px"}}
-                   facingMode={isMobile ? `back` : `rear`}
+                    style={{ width: '80%', height: 'auto', borderRadius: "20px" }}
+                    facingMode={isMobile ? 'environment' : 'user'} // Use correct facing mode for mobile/desktop
                 />
             </div>
         </div>
