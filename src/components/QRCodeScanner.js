@@ -17,7 +17,7 @@ const QRCodeScanner = () => {
     const [scannedData, setScannedData] = useState(null);
     const [scannedCodesSet, setScannedCodesSet] = useState(new Set()); // Store unique scanned codes
 
- 
+
 
     const handleScan = async (data) => {
         if (data) {
@@ -53,7 +53,11 @@ const QRCodeScanner = () => {
                     onError={handleError}
                     onScan={handleScan}
                     style={{ width: '80%', height: 'auto', borderRadius: "20px" }}
-                    facingMode={isMobile ? 'environment' : 'user'} // Use correct facing mode for mobile/desktop
+                    constraints={{
+                        video: {
+                          facingMode: 'environment'  // Use back camera for mobile devices
+                        }
+                      }} // Use correct facing mode for mobile/desktop
                 />
             </div>
         </div>
