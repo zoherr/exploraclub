@@ -1,6 +1,4 @@
 "use client"
-import { useEffect, useRef, useState } from 'react';
-
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from "@vercel/analytics/react"
 import localFont from "next/font/local";
@@ -10,8 +8,6 @@ import { Provider } from 'react-redux';
 import { store } from "../redux/store"
 import Navbar from "../components/navbar/page"
 import Footer from "../components/Footer/page"
-import Loader from "../components/workinprogress/Workinprogress"
-
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
     variable: "--font-geist-sans",
@@ -29,7 +25,7 @@ const geistMono = localFont({
 // };
 
 export default function RootLayout({ children }) {
-const [progress,setProgress] = useState(true)
+
     return (
         <html lang="en">
 
@@ -37,9 +33,8 @@ const [progress,setProgress] = useState(true)
                 <Toaster
                     position="top-center" />
                 <Provider store={store}>
-                    {/* <Navbar /> */}
-                    {progress ?  <Loader /> :  {children}}
-
+                    <Navbar />
+                    {children}
                     <SpeedInsights />
 <Analytics/>
                     {/* <  Footer /> */}

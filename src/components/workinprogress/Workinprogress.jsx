@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
+import Image from "next/image"
 function Loader() {
     const [count, setCount] = useState(0);
 
@@ -12,7 +12,7 @@ function Loader() {
             <div className=" text-[#CDEA68] flex items-center h-screen w-full justify-center ">
 
                 <motion.div
-                    className="absolute flex gap-10 top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%]"
+                    className="hidden absolute sm:flex gap-10 top-1/2 left-1/2 -translate-x-[50%] -translate-y-[50%]"
                 >
                     <div className="sm:w-[12vw] w-[15vw] h-[15vw] sm:h-[12vw] flex rounded-full bg-white items-center justify-center">
                         <motion.div
