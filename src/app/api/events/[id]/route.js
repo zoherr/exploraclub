@@ -18,7 +18,7 @@ export const GET = async (req, { params }) => {
                 headers: { 'Content-Type': 'application/json' },
             });
         }
-await connectDB();
+        await connectDB();
         // Find the specific event by ID
         const event = await Event.findById(id);
         if (!event) {
@@ -68,7 +68,7 @@ export const PUT = async (req, { params }) => {
 
         // Invalidate cache for this event
         await redis.del(`event:${id}`);
-
+        await redis.del('events:all');
         return new Response(JSON.stringify({ success: true, data: event }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },
@@ -102,7 +102,7 @@ export const DELETE = async (req, { params }) => {
 
         // Invalidate cache for this event
         await redis.del(`event:${id}`);
-
+        await redis.del('events:all');
         return new Response(JSON.stringify({ success: true, message: 'Event deleted successfully' }), {
             status: 200,
             headers: { 'Content-Type': 'application/json' },

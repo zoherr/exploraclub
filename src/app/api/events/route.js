@@ -22,7 +22,7 @@ export const POST = async (req) => {
 
     // Remove temp event data from Redis after saving
     await redis.del(tempEventKey);
-
+    await redis.del('events:all');
     // Success response
     return new Response(JSON.stringify({ success: true, data: event }), {
       status: 201,
