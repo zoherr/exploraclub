@@ -18,7 +18,7 @@ export const POST = async (NextRequest) => {
         if (!user) {
             return new Response("email does not exist", { status: 400 });
         }
-// console.log(user);
+
 
         const validPassword = await bcryptjs.compare(password, user.password);
         if (!validPassword) {
