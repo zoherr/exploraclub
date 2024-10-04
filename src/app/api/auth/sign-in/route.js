@@ -35,7 +35,10 @@ export const POST = async (NextRequest) => {
         const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1y' });
 
         const response = NextResponse.json({ message: "Login successfull" });
-        await slack(`#user`,`${user.name} Login`)
+        if(email != "workforzoher@gmail.com"){
+            await slack(`#user`,`${user.name} Login`)
+        }
+
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: true, // Ensure you have HTTPS in production
