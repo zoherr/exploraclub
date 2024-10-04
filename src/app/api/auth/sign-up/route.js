@@ -106,19 +106,15 @@ export const POST = async (req) => {
             html: emailTemplate,
         };
 
-        try {
-            await transporter.sendMail(mailOptions);
-        } catch (emailError) {
-            slack(`#error`, `Email failed to send to ${email} of ${name}: ${emailError.message}`);
-            return new Response("Invalid email address. Registration failed.", { status: 400 });
-        }
+
+        await transporter.sendMail(mailOptions);
+
 
         const newUser = new User({
             name,
             email,
             password: hashedPassword,
             enrollmentNo, semester
-
         })
         const tokenData = {
             name,
@@ -132,7 +128,8 @@ export const POST = async (req) => {
 
         await newUser.save();
         const response = NextResponse.json({ message: "User saved successfully" });
-        await slack(`#user`, `${name} Register`)
+        await slack(`#user`, `${name}  Register`)
+        await slack(`#email-user`, `${name}, "${email}" Register`)
         response.cookies.set("token", token, {
             httpOnly: true,
             secure: true, // Ensure you have HTTPS in production
