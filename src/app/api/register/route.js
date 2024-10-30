@@ -6,6 +6,7 @@ import Register from '../../../models/register.models';
 import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
+// import ics from 'ics';
 
 connectDB();
 export const POST = async (req) => {
@@ -77,7 +78,32 @@ export const POST = async (req) => {
 
         // Update events for each valid member
 
+        const createICS = (event, user) => {
+            return new Promise((resolve, reject) => {
+                const eventData = {
+                    start: [2024, 10, 26, 10, 30], // Example: [Year, Month, Day, Hour, Minute]
+                    duration: { hours: 3 }, // Duration of the event
+                    title: event.name,
+                    description: `Event at ${event.location}`,
+                    location: event.location,
+                    url: `https://your-app-url.com/event/${event._id}`,
+                    organizer: { name: 'Rahul Kulkarni', email: 'rahul@example.com' },
+                    attendees: [
+                        { name: user.name, email: user.email }
+                    ]
+                };
 
+                ics.createEvent(eventData, (error, value) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(value); // `value` is the .ics content
+                    }
+                });
+            });
+        };
+
+        // const icsContent = await createICS(event, user);
         // Send email notifications as before...
         const transporter = nodemailer.createTransport({
             host:  "smtp.gmail.com", // Replace with your SMTP server
@@ -100,13 +126,17 @@ export const POST = async (req) => {
                         html: `<p>Thank you for registering for the event!</p>
                                <p>Here is your QR code:</p>
                                <img src="cid:qrCodeImage" alt="Your QR Code" style="width: 200px; height: auto;" />`,
-                        attachments: [
-                            {
-                                filename: 'qrcode.png',
-                                path: qrCodeUrl,
-                                cid: 'qrCodeImage' // Same cid as in the html img src
-                            }
-                        ]
+                               attachments: [
+                                {
+                                    filename: 'qrcode.png',
+                                    path: qrCodeUrl,
+                                    cid: 'qrCodeImage' // Same cid as in the html img src
+                                },
+                                // {
+                                //     filename: `${event.name}.ics`,
+                                //     content: icsContent // Attach the .ics content
+                                // }
+                            ]
                     };
 
                     return transporter.sendMail(mailOptions); // Send mail for each member
@@ -116,7 +146,7 @@ export const POST = async (req) => {
 
         await Promise.all(mailPromises); // Wait for all emails to be sent
         await slack(`#event-registration`, `${user.name} registered for ${event.name}`);
-
+        await redis.del(`event:${event._id}`);
         // Successful response
         return NextResponse.json({ success: true, message: "Registration successful and QR code sent", qr: qrCodeUrl, qrImage: qrData }, { status: 201 });
 

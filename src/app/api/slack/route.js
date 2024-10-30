@@ -12,8 +12,8 @@ export async function POST(request) {
 
     // Send message to Slack
     const result = await web.chat.postMessage({
-      channel, // e.g. '#general'
-      text,    // e.g. 'Hello from Next.js'
+      channel, 
+      text,
     });
 
     return NextResponse.json({ message: 'Message sent', result });

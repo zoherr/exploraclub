@@ -23,7 +23,6 @@ const UpdateEvent = ({id}) => {
     time: "",
     location: "",
     semester: "",
-    teamMember: 1,
     winner: "",
     eventImages: [""],
   });

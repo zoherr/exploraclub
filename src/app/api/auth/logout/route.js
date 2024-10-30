@@ -8,10 +8,8 @@ export async function GET() {
             success: true,
         });
 
-        // Clear the cookie
         response.cookies.set("token", "", { httpOnly: true, expires: new Date(0) });
 
-        // Return the response
         return response;
     } catch (error) {
         slack(`#error`, `Error Login: ${error.message}`);

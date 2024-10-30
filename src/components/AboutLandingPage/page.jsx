@@ -148,7 +148,7 @@ const AboutLandingPage = () => {
                                     className="w-full h-full object-cover"
                                 />
                             </div>
-                            <h1 className='bg-white bg-opacity-10  border-none w-[8.7rem] backdrop-blur-lg text-white relative -top-[4.5rem]  left-4 NeueMontreal-Regular px-5 py-2   mt-2    rounded-full text-xl'>Mahi Yadav</h1>
+                            <h1 className='bg-white bg-opacity-10 backdrop-blur-lgbackdrop-blur-lg  border-none w-[8.7rem]  text-white relative -top-[4.5rem]  left-4 NeueMontreal-Regular px-5 py-2   mt-2    rounded-full text-xl'>Mahi Yadav</h1>
                             </div>
                             <div className="">
                             <div className="h-[21rem] w-[19rem] rounded-xl   overflow-hidden">

@@ -116,7 +116,9 @@ export const POST = async (req) => {
             password: hashedPassword,
             enrollmentNo, semester
         })
+        const newUserID=newUser._id;
         const tokenData = {
+            newUserID ,
             name,
             email,
             enrollmentNo,
