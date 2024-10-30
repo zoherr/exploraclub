@@ -132,7 +132,7 @@ const Page = ({ params }) => {
                         <div className="flex items-center mt-8 gap-2 bg-[#16423C] px-3 py-2 rounded-xl">
                             <FaCalendarCheck className="text-5xl text-[#fff]" />
                             <div className="text-white text-lg font-medium">
-                                <p>{formattedTime}</p>
+                                <p>{event.time}</p>
                                 <p>{formattedDate}</p>
                             </div>
                         </div>
