@@ -7,6 +7,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { MdEditSquare, MdDelete } from "react-icons/md";
 import { IoIosSend } from "react-icons/io";
+import { PiCertificateFill } from "react-icons/pi";
 
 const ManageEvent = () => {
     const [event, setEvent] = useState([]);
@@ -102,6 +103,15 @@ const ManageEvent = () => {
                                     aria-label="Edit Event"
                                 >
                                     <MdEditSquare />
+                                </button>
+                            </Link>
+
+                            <Link href={`/admin/certificate/${item._id}`}>
+                                <button
+                                    className="p-2 bg-[#FF00FF] text-white rounded hover:bg-[#c600c6] transition duration-200"
+                                    aria-label="Certificate"
+                                >
+                                    <PiCertificateFill  />
                                 </button>
                             </Link>
                         </div>

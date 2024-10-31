@@ -12,7 +12,7 @@ export async function POST(request) {
 
     // Send message to Slack
     const result = await web.chat.postMessage({
-      channel, 
+      channel,
       text,
     });
 
