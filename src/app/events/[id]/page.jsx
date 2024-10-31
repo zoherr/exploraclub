@@ -20,6 +20,8 @@ const Page = ({ params }) => {
     const user = useSelector((state) => state.user.user);
     const isRegistered = event?.registered?.includes(user?.id);
     const [loader, setLoader] = useState(false)
+    const [loaderr, setLoaderr] = useState(false)
+
     const isAttende = event?.attendance?.includes(user?.id);
     useEffect(() => {
         const fetchEvent = async () => {
@@ -217,7 +219,7 @@ const Page = ({ params }) => {
                                 className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-700"
                                 onClick={handleConfirm}
                             >
-                                {loaderr ? "Loading" : "Confirm"}
+                                {loader ? "Loading" : "Confirm"}
                             </button>
                             <button
                                 className="ml-2 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-700"
