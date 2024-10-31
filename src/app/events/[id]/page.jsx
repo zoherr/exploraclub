@@ -19,8 +19,8 @@ const Page = ({ params }) => {
     const [enrollmentNos, setEnrollmentNos] = useState([]);
     const user = useSelector((state) => state.user.user);
     const isRegistered = event?.registered?.includes(user?.id);
-    const [loader,setLoader ] = useState(false)
-
+    const [loader, setLoader] = useState(false)
+    const isAttende = event?.attendance?.includes(user?.id);
     useEffect(() => {
         const fetchEvent = async () => {
             try {
@@ -102,31 +102,39 @@ const Page = ({ params }) => {
                             height={100}
                             className="rounded-lg"
                         />
-                     {
-    !event.isCompleted && (
-        user ? (
-            isRegistered ? (
-                <div className="bg-gray-400 px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5">
-                    <SiTicktick className='mr-2' />
-                    Registration Done
-                </div>
-            ) : (
-                <div
-                    className="bg-[#CDEA68] px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5 cursor-pointer"
-                    onClick={handleJoinClick}
-                >
-                    <SiTicktick className='mr-2' />
-                     {loader ? "Loading" : "Join Now"}
-                </div>
-            )
-        ) : (
-            <div className="bg-[#CDEA68] px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5">
-                <SiTicktick className='mr-2' />
-                Sign In First
-            </div>
-        )
-    )
-}
+                        {
+                            !event.isCompleted && (
+                                user ? (
+                                    isRegistered ? (
+                                        <>
+                                            {
+                                                isAttende ? <div className="bg-[#CDEA68]  px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5">
+                                                    <SiTicktick className='mr-2' />
+                                                    Attendance Done
+                                                </div> : <div className="bg-gray-400 px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5">
+                                                    <SiTicktick className='mr-2' />
+                                                    Going in
+                                                </div>
+                                            }
+                                        </>
+
+                                    ) : (
+                                        <div
+                                            className="bg-[#CDEA68] px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5 cursor-pointer"
+                                            onClick={handleJoinClick}
+                                        >
+                                            <SiTicktick className='mr-2' />
+                                            {loader ? "Loading" : "Join Now"}
+                                        </div>
+                                    )
+                                ) : (
+                                    <div className="bg-[#CDEA68] px-2 py-3 text-xl flex items-center justify-center font-semibold text-center rounded-xl mt-5">
+                                        <SiTicktick className='mr-2' />
+                                        Sign In First
+                                    </div>
+                                )
+                            )
+                        }
 
 
                         <div className="flex items-center mt-8 gap-2 bg-[#16423C] px-3 py-2 rounded-xl">

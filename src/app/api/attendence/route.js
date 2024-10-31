@@ -24,8 +24,12 @@ export const POST = async (req) => {
         register.attendance = true;
         const user = await User.findById(register.user);
         const event = await Event.findById(register.event);
-        event.attendance.push(user._id)
-        await event.save()
+        const newAttendance = new Set([...event.attendance, user._id, ...register.members]);
+
+        // Convert Set back to an array and assign it to event.attendance
+        event.attendance = Array.from(newAttendance);
+
+        await event.save();
 
         slack(`#event-attendence`, `${user.name} Scanned`);
         await register.save();

@@ -41,9 +41,7 @@ export const POST = async (req) => {
 // GET request handler for fetching all gallery items
 export const GET = async () => {
     try {
-
-
-        // Check if galleries are cached
+       // Check if galleries are cached
         const cachedGalleries = await redis.get('galleries');
         if (cachedGalleries) {
             return NextResponse.json({ success: true, data: JSON.parse(cachedGalleries) }, { status: 200 });

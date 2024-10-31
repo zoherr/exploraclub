@@ -11,13 +11,13 @@ export const GET = async (req, { params }) => {
     const { id } = params; // Extracting ID from params
     try {
         // Check if the event is cached in Redis
-        const cachedEvent = await redis.get(`event:${id}`);
-        if (cachedEvent) {
-            return new Response(JSON.stringify({ success: true, data: JSON.parse(cachedEvent) }), {
-                status: 200,
-                headers: { 'Content-Type': 'application/json' },
-            });
-        }
+        // const cachedEvent = await redis.get(`event:${id}`);
+        // if (cachedEvent) {
+        //     return new Response(JSON.stringify({ success: true, data: JSON.parse(cachedEvent) }), {
+        //         status: 200,
+        //         headers: { 'Content-Type': 'application/json' },
+        //     });
+        // }
         await connectDB();
         // Find the specific event by ID
         const event = await Event.findById(id);
@@ -28,8 +28,8 @@ export const GET = async (req, { params }) => {
             });
         }
 
-        // Cache the event in Redis for 1 week
-        await redis.set(`event:${id}`, JSON.stringify(event), 'EX', 60 * 60 * 24 * 7); // Cache for 1 week
+
+        // await redis.set(`event:${id}`, JSON.stringify(event), 'EX', 60 * 60 * 24 * 7); // Cache for 1 week
 
         return new Response(JSON.stringify({ success: true, data: event }), {
             status: 200,
@@ -67,7 +67,7 @@ export const PUT = async (req, { params }) => {
         }
 
         // Invalidate cache for this event
-        await redis.del(`event:${id}`);
+        // await redis.del(`event:${id}`);
         await redis.del('events:all');
         return new Response(JSON.stringify({ success: true, data: event }), {
             status: 200,
@@ -101,7 +101,7 @@ export const DELETE = async (req, { params }) => {
         }
 
         // Invalidate cache for this event
-        await redis.del(`event:${id}`);
+        // await redis.del(`event:${id}`);
         await redis.del('events:all');
         return new Response(JSON.stringify({ success: true, message: 'Event deleted successfully' }), {
             status: 200,
