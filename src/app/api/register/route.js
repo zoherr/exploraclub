@@ -7,6 +7,7 @@ import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
 // import ics from 'ics';
+import { redis } from "../../../utils/redis"; // Redis import
 
 connectDB();
 export const POST = async (req) => {
@@ -145,8 +146,8 @@ export const POST = async (req) => {
         });
 
         await Promise.all(mailPromises); // Wait for all emails to be sent
-        await slack(`#event-registration`, `${user.name} registered for ${event.name}`);
-        await redis.del(`event:${event._id}`);
+        // await slack(`#event-registration`, `${user.name} registered for ${event.name}`);
+
         // Successful response
         return NextResponse.json({ success: true, message: "Registration successful and QR code sent", qr: qrCodeUrl, qrImage: qrData }, { status: 201 });
 

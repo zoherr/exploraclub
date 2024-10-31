@@ -5,7 +5,7 @@ import Register from '../../../../models/register.models';
 import Event from '../../../../models/event.model';
 import connectDB from "../../../../utils/connectDB";
 import { createObjectCsvStringifier } from 'csv-writer';
-
+import slack from "../../../../services/slack.js"
 const slackToken = process.env.SLACK_BOT_TOKEN;
 const web = new WebClient(slackToken);
 connectDB();
