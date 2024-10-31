@@ -186,8 +186,8 @@ const Page = ({ params }) => {
             </div>
 
             {showPopup && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                    <div className="bg-white p-5 rounded-lg w-1/3">
+                <div className="fixed inset-0 bg-black bg-opacity-50  flex justify-center items-center">
+                    <div className="bg-white w-[85%] p-5 rounded-lg sm:w-1/3">
                         <h2 className="text-xl font-semibold mb-4">Select Team Members</h2>
                         <label className="block mb-2">
                             Number of Members:
