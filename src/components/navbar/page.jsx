@@ -10,122 +10,108 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation'; // Use usePathname instead of useRouter
 import { useSession, signIn, signOut, getProviders } from "next-auth/react"
 import toast, { Toaster } from 'react-hot-toast';
-import { setUser,logout } from "../../redux/userSlice";
+import { setUser, logout } from "../../redux/userSlice";
 import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 import { LuLogOut } from "react-icons/lu";
 
 export default function Navbar() {
     const [loginLoading, setLoginLoading] = useState(false);
     const [registerLoading, setRegisterLoading] = useState(false);
-
     const dispatch = useDispatch();
-
-    const [logout] = useLogoutMutation();
+    const [performLogout] = useLogoutMutation(); // Rename to avoid conflict with userSlice's logout action
     const { data, error, isLoading, refetch } = useGetUserInfoQuery();
-    // console.log(data);
-
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState(null);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+    const pathname = usePathname();
+
+    const [open, setOpen] = useState(false);
+    const [section, setSection] = useState(0);
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const navbarItem = [
+        { name: 'Home', path: '/' },
+        { name: 'Events', path: '/events' },
+        { name: 'About Us', path: '/about-us' },
+        { name: 'Gallery', path: '/gallery' },
+        { name: 'Contact Us', path: '/#contact-us' }
+    ];
 
     const handleLogout = async () => {
         try {
-            await logout().unwrap();
-            setUserData(null)
+            await performLogout().unwrap();
+            setUserData(null);
             toast.success('Logout successful');
-            setIsUserLoggedIn(false)
-            // window.location.reload();
+            setIsUserLoggedIn(false);
         } catch (error) {
             toast.error('Error logging out');
         }
-
     };
 
     useEffect(() => {
-        refetch()
-    }, [refetch,isUserLoggedIn,userData])
+        if (data && data.loggedIn) {
+            setIsUserLoggedIn(true);
+            setUserData(data.user);
+            dispatch(setUser(data.user));
+        } else {
+            setIsUserLoggedIn(false);
+            setUserData(null);
+        }
+    }, [data, dispatch]);
 
     const [registerUser, setRegisterUser] = useState({
         name: "",
         email: "",
         password: "",
         enrollmentNo: "",
-        semester: ""
-    })
+        semester: "" // Set initial value
+    });
+
     const [loginUser, setLoginUser] = useState({
         email: "",
-        password: "",
-    })
-    const pathname = usePathname();
+        password: ""
+    });
 
-    useEffect(() => {
-
-        if (data && data.loggedIn) {
-            refetch()
-            setIsUserLoggedIn(true);
-            setUserData(data.user);
-            dispatch(setUser(data.user))
-
-
-        } else {
-            refetch()
-            setIsUserLoggedIn(false);
-            setUserData(null);
-        }
-    }, [data,refetch,dispatch]);
-
-
-    const [open, setOpen] = useState(false)
-    const [section, setSection] = useState(0);
-    const navbarItem = [
-        { name: 'Home', path: '/' },
-        { name: 'Events', path: '/events' },
-        { name: 'About Us', path: '/about-us' },
-        { name: 'Gallary', path: '/gallary' },
-        { name: 'Contact Us', path: '/#contact-us' }
-    ];
-
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const onSignup = async () => {
-        setRegisterLoading(true)
-
+        setRegisterLoading(true);
+        if (!registerUser.email || !registerUser.password) {
+            toast.error("Please fill out all required fields");
+            setRegisterLoading(false);
+            return;
+        }
         try {
             const response = await axios.post('/api/auth/sign-up', registerUser);
             if (response.status === 200) {
-                setOpen(false)
-                // storeUserData(registerUser);
-                toast.success('Registeration Successfully!');
+                setOpen(false);
+                toast.success('Registration Successful!');
                 setIsUserLoggedIn(true);
-                setRegisterLoading(false)
             }
         } catch (error) {
-            setRegisterLoading(false)
-            toast.error("Error Occured!!")
-            // console.log(error);
+            toast.error("Error Occurred!");
+        } finally {
+            setRegisterLoading(false);
         }
+    };
 
-    }
     const onLogin = async () => {
-        setLoginLoading(true)
+        setLoginLoading(true);
+        if (!loginUser.email || !loginUser.password) {
+            toast.error("Please enter both email and password");
+            setLoginLoading(false);
+            return;
+        }
         try {
             const response = await axios.post('/api/auth/sign-in', loginUser);
-
-
             if (response.status === 200) {
                 setIsUserLoggedIn(true);
-
-
-                // storeUserData(loginUser);
-                setOpen(false)
-                toast.success(`Welcome!!`);
+                setOpen(false);
+                toast.success("Welcome!");
             }
-            setLoginLoading(false)
         } catch (error) {
-            setLoginLoading(false)
-            toast.error("Error Occured!!")
-            // console.log(error);
+            toast.error("Error Occurred!");
+        } finally {
+            setLoginLoading(false);
         }
-
-    }
+    };
     return (
         <div className="w-full">
             <div className=" items-center gap-3 sticky top-5  justify-between py-5  px-5  hidden sm:flex  text-black">
@@ -142,19 +128,19 @@ export default function Navbar() {
 
                     {
 
-                    navbarItem.map((item, i) => (
-                        <Link href={item.path} key={i}>
-                            <p style={{
-                                textDecoration: pathname === item.path ? 'underline' : 'none',
+                        navbarItem.map((item, i) => (
+                            <Link href={item.path} key={i}>
+                                <p style={{
+                                    textDecoration: pathname === item.path ? 'underline' : 'none',
 
-                            }} className="NeueMontreal-Regular text-[#16423C] underline-offset-1 font-normal text-lg hover:underline  cursor-pointer"  >{item.name} </p> </Link>
-                    )
-                    )
-                }
-                { userData && userData?.role === "admin" &&
-  <Link href="/admin">
-  <p className="NeueMontreal-Regular text-[#004D43] font-normal text-lg hover:underline cursor-pointer"  >Admin </p> </Link>
-}
+                                }} className="NeueMontreal-Regular text-[#16423C] underline-offset-1 font-normal text-lg hover:underline  cursor-pointer"  >{item.name} </p> </Link>
+                        )
+                        )
+                    }
+                    {userData && userData?.role === "admin" &&
+                        <Link href="/admin">
+                            <p className="NeueMontreal-Regular text-[#004D43] font-normal text-lg hover:underline cursor-pointer"  >Admin </p> </Link>
+                    }
                 </div>
                 {isUserLoggedIn ? (<>
                     <div className="flex gap-6">
@@ -176,7 +162,7 @@ export default function Navbar() {
             <div className=" items-center gap-3 sticky top-0 justify-between flex px-[1rem] pt-4 py-3  bg-opacity-0  sm:hidden   text-[#004D43] ">
                 <div className="">
                     <Image
-                         src="https://i.ibb.co/ZdsyCMX/Logo-removebg-1.png"
+                        src="https://i.ibb.co/ZdsyCMX/Logo-removebg-1.png"
                         alt="Description of image"  // Alt text for accessibility
                         width={40}                // Image width
                         height={40}               // Image height
@@ -221,10 +207,10 @@ export default function Navbar() {
                         )
                         )
                     }
-                    { userData && userData?.role === "admin" &&
-  <Link href="/admin">
-  <p className=" NeueMontreal-Regular text-[#004D43]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
-}
+                    {userData && userData?.role === "admin" &&
+                        <Link href="/admin">
+                            <p className=" NeueMontreal-Regular text-[#004D43]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
+                    }
                 </div>
             </>}
             {
