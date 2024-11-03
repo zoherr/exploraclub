@@ -117,6 +117,7 @@ export const POST = async (req) => {
             enrollmentNo, semester
         })
         const newUserID=newUser._id;
+
         const tokenData = {
             newUserID ,
             name,
@@ -134,9 +135,9 @@ export const POST = async (req) => {
         await slack(`#email-user`, `${name}, "${email}" Register`)
         response.cookies.set("token", token, {
             httpOnly: true,
-            secure: true, // Ensure you have HTTPS in production
+            secure: true,
             sameSite: 'Strict',
-            maxAge: 365 * 24 * 60 * 60 * 1000 // 1 year in milliseconds
+            maxAge: 365 * 24 * 60 * 60 * 1000 
         });
 
         return response;

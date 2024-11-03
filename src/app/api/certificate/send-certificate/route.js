@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import connectDB from "../../../../utils/connectDB";
 import nodemailer from "nodemailer";
+import Event from "../../../../models/event.model";
+import slack from "../../../../services/slack";
 
 export const POST = async (req) => {
     try {
@@ -8,15 +10,32 @@ export const POST = async (req) => {
 
         // Use FormData to extract the values
         const formData = await req.formData();
-
+        const eventId = formData.get('eventId');
+        const userId = formData.get('userId');
         const email = formData.get('email');
         const userName = formData.get('userName');
         const certificateFile = formData.get('certificate');
 
         // Validate input
-        if (!email || !userName || !certificateFile) {
+        if (!email || !userName || !certificateFile || !eventId || !userId) {
             return NextResponse.json({ success: false, message: "Email, userName, and certificate file are required" }, { status: 400 });
         }
+
+        const event = await Event.findById(eventId);
+        console.log(event);
+
+        if (!event) {
+            return NextResponse.json({ success: false, message: "Event Not Found!!" }, { status: 400 });
+        }
+
+        if (!Array.isArray(event.certificate)) {
+            event.certificate = [];
+        }
+console.log(userId);
+
+        event.certificate.push(userId);
+
+        await event.save();
 
         // Email configuration
         const transporter = nodemailer.createTransport({
@@ -51,10 +70,10 @@ export const POST = async (req) => {
 
         // Send email
         await transporter.sendMail(mailOptions);
-
         return NextResponse.json({ success: true, message: "Certificate sent successfully" }, { status: 200 });
 
     } catch (error) {
+        await slack(`#error`, `Error While Sending certificate: ${error.message}`);
         console.error("Error while sending certificate email:", error);
         return NextResponse.json({ success: false, message: "Failed to send certificate. Please try again." }, { status: 500 });
     }

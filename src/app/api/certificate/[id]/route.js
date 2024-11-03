@@ -22,7 +22,11 @@ export const GET = async (req, { params }) => {
         const attendeeDetails = await Promise.all(
             event.attendance.map(async (userId) => {
                 const user = await User.findById(userId);
-                return user ? { userId: user._id, userName: user.name, email: user.email } : null;
+
+                // Ensure `event.certificate` is defined and is an array, then check if userId is in it
+                const hasCertificate = Array.isArray(event.certificate) && event.certificate.includes(userId);
+
+                return user && !hasCertificate ? { userId: user._id, userName: user.name, email: user.email } : null;
             })
         );
 

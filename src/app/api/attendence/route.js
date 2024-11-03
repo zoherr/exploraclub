@@ -31,7 +31,7 @@ export const POST = async (req) => {
 
         await event.save();
 
-        slack(`#event-attendence`, `${user.name} Scanned`);
+        // slack(`#event-attendence`, `${user.name} Scanned`);
         await register.save();
 
         return new Response(JSON.stringify({ message: "Attendance marked successfully" }), { status: 200 });

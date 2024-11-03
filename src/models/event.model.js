@@ -26,6 +26,7 @@ const eventSchema = new mongoose.Schema({
     isCompleted: { type: Boolean, default: false },
     registered: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
     attendance: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
+    certificate: [{ type: mongoose.Schema.Types.ObjectId, ref: 'users' }],
     registerId: [{ type: mongoose.Schema.Types.ObjectId, ref: 'registers' }],
 }, { timestamps: true })
 const Event = mongoose.models.events || mongoose.model("events", eventSchema)
