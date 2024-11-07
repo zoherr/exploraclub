@@ -25,12 +25,12 @@ const Past = () => {
         fetchEvents();
     }, []);
     if (loading) {
-        return <Loader/>; // Loading state
-      }
+        return <Loader />; // Loading state
+    }
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mt-6 sm:mx-11 ">
             {events
-                .filter(event => event.isCompleted) // Only include events where isCompleted is true
+                .filter(event => event.isCompleted) 
                 .map((event, index) => (
                     <EventCard key={index} event={event} />
                 ))}

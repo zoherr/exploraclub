@@ -31,7 +31,7 @@ const HomeEvent = () => {
         <div className='  border-[#DCDCDC]  border-t-[1px]'>
 
             {
-                event.map((item, index) => (
+                event.filter(event => event.isCompleted).map((item, index) => (
                     <div key={index} className="sm:flex pt-[1.5rem] sm:pt-[2rem] NeueMontreal-Regular justify-between text-black border-[#DCDCDC] pb-9  border-b-[1px]">
 
                         <p className='sm:text-xl text-2xl sm:w-[20%] '>{item.name}</p>

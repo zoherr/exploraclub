@@ -42,35 +42,39 @@ export const POST = async (req) => {
 
 // GET: Retrieve all events with caching
 export const GET = async (req) => {
-  try {
-    // Check if events are cached in Redis
-    const cachedEvents = await redis.get('events:all');
-    if (cachedEvents) {
-      return new Response(JSON.stringify({ success: true, data: JSON.parse(cachedEvents) }), {
+    try {
+      const cachedEvents = await redis.get('events:all');
+      if (cachedEvents) {
+        const sortedEvents = JSON.parse(cachedEvents).sort((a, b) => new Date(a.date) - new Date(b.date));
+        return new Response(JSON.stringify({ success: true, data: sortedEvents }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      await connectDB();
+
+      // If not cached, retrieve from the database
+      const events = await Event.find();
+
+      // Sort events by date
+      const sortedEvents = events.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+      // Cache the sorted events in Redis for 1 hour
+      await redis.set('events:all', JSON.stringify(sortedEvents), 'EX', 3600); // Cache for 1 hour
+
+      return new Response(JSON.stringify({ success: true, data: sortedEvents }), {
         status: 200,
         headers: { 'Content-Type': 'application/json' },
       });
+    } catch (error) {
+      // Log error in Slack
+      await slack(`#error`, `Error While Fetching Events: ${error.message}`);
+
+      // Return error response
+      return new Response(JSON.stringify({ success: false, message: error.message }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
-    await connectDB();
+  };
 
-    // If not cached, retrieve from the database
-    const events = await Event.find();
-
-    // Cache the events in Redis for 1 hour
-    await redis.set('events:all', JSON.stringify(events), 'EX', 604800); // Cache for 1 hour
-
-    return new Response(JSON.stringify({ success: true, data: events }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    // Log error in Slack
-    await slack(`#error`, `Error While Fetching Events: ${error.message}`);
-
-    // Return error response
-    return new Response(JSON.stringify({ success: false, message: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-};

@@ -4,7 +4,7 @@ import slack from "../../../services/slack"
 const SECRET_KEY = process.env.JWT_SECRETKEY;
 
 export const GET = async (req) => {
-    const token = req.cookies.get('token')?.value;// Get the token from cookies
+    const token = req.cookies.get('token')?.value;
     const verifyToken = (token) => {
         return jwt.verify(token, process.env.JWT_SECRETKEY);
     };

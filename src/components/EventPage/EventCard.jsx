@@ -4,7 +4,7 @@ import Link from 'next/link'; // Import the Link component
 
 const EventCard = ({ event }) => {
     return (
-        <div className="p-4 rounded-lg shadow-lg sm:w-[25rem]  relative bg-white bg-opacity-10  backdrop-blur-lg border border-white/20"
+        <div className="p-4 rounded-lg shadow-lg sm:w-[25rem] h-full relative bg-white bg-opacity-10  backdrop-blur-lg border border-white/20"
             style={{ boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)' }}>
    <Link href={`/events/${event._id}`}>
             {/* Date Tag */}
