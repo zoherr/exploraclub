@@ -1,13 +1,15 @@
 import connectDB from '../../../utils/connectDB';
 import User from '../../../models/user.models';
+import { isBefore } from 'date-fns'; // Importing date-fns for comparison
 
 connectDB();
 
 const deleteUnverifiedAccounts = async () => {
   try {
+    const currentUtcTime = new Date();
     await User.deleteMany({
       isVerified: false,
-      verificationExpires: { $lt: Date.now() },
+      verificationExpires: { $lt:currentUtcTime  },
     });
     console.log('Deleted expired unverified accounts');
   } catch (error) {

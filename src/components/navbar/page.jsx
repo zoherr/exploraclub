@@ -82,6 +82,7 @@ export default function Navbar() {
             const response = await axios.post('/api/auth/sign-up', registerUser);
             if (response.status === 200) {
                 setOpen(false);
+                alert("Verify your email to unlock your account!");
                 toast.success('Registration Successful!');
                 setIsUserLoggedIn(true);
             }

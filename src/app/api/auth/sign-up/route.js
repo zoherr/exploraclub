@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import slack from "../../../../services/slack"
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { addMinutes, isAfter, parseISO } from 'date-fns';
 
 connectDB()
 export const POST = async (req) => {
@@ -23,9 +24,9 @@ export const POST = async (req) => {
             return new Response("enrollmentNo already exist", { status: 400 });
         }
         const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationExpires = Date.now() + 3 * 60 * 1000;
+        const verificationExpires = addMinutes(new Date(), 3);
         const salt = await bcryptjs.genSalt(12);
-        const verificationLink = `https://exploraclub.vercel.app/api/auth/verification/verify?token=${verificationToken}`;
+        const verificationLink = `https://exploraclub.vercel.app/api/auth/verification?token=${verificationToken}`;
 
         const hashedPassword = await bcryptjs.hash(password, salt);
         //
@@ -58,6 +59,9 @@ export const POST = async (req) => {
       color: #666666;
       line-height: 1.6;
     }
+      a{
+      color: #ffffff;
+      }
     .btn {
       display: inline-block;
       background-color: #4CAF50;
