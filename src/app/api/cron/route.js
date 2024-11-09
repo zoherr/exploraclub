@@ -1,4 +1,3 @@
-import cron from 'node-cron';
 import connectDB from '../../../utils/connectDB';
 import User from '../../../models/user.models';
 
@@ -12,13 +11,12 @@ const deleteUnverifiedAccounts = async () => {
     });
     console.log('Deleted expired unverified accounts');
   } catch (error) {
+
     console.error('Error deleting expired unverified accounts:', error);
   }
 };
 
-cron.schedule('* * * * *', async () => {
-  await deleteUnverifiedAccounts();
-});
+
 
 export async function GET() {
     try {
