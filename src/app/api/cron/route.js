@@ -20,15 +20,11 @@ cron.schedule('* * * * *', async () => {
   await deleteUnverifiedAccounts();
 });
 
-export default async function handler(req, res) {
-  if (req.method === 'GET') {
+export async function GET() {
     try {
-      await deleteUnverifiedAccounts();
-      res.status(200).json({ message: 'Cron job executed successfully' });
-    } catch (error) {
-      res.status(500).json({ error: 'Failed to execute cron job' });
-    }
-  } else {
-    res.status(405).json({ message: 'Method not allowed' });
+        await deleteUnverifiedAccounts();
+        return new Response("Cron job executed successfully", { status: 200 })
+      } catch (error) {
+        return new Response("Failed to execute cron job", { status: 500 })
+      }
   }
-}
