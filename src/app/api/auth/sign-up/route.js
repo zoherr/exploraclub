@@ -5,6 +5,7 @@ import bcryptjs from "bcryptjs"
 import jwt from 'jsonwebtoken';
 import slack from "../../../../services/slack"
 import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 connectDB()
 export const POST = async (req) => {
@@ -21,8 +22,11 @@ export const POST = async (req) => {
         if (user) {
             return new Response("enrollmentNo already exist", { status: 400 });
         }
-
+        const verificationToken = crypto.randomBytes(32).toString('hex');
+        const verificationExpires = Date.now() + 3 * 60 * 1000;
         const salt = await bcryptjs.genSalt(12);
+        const verificationLink = `https://exploraclub.vercel.app/api/auth/verification/verify?token=${verificationToken}`;
+
         const hashedPassword = await bcryptjs.hash(password, salt);
         //
         const emailTemplate = `
@@ -77,7 +81,7 @@ export const POST = async (req) => {
     <h1>Welcome to Explora Club!</h1>
     <p>Hi ${name},</p>
     <p>We're excited to have you join us at Explora Club! Get ready to explore and enjoy.</p>
-
+  <a href="${verificationLink}" class="btn">Verify Now</a>
     <p>If you have any questions, feel free to reach out to our support team at itmbuexploraclub@gmail.com.</p>
 
     <p>Welcome aboard!</p>
@@ -114,7 +118,9 @@ export const POST = async (req) => {
             name,
             email,
             password: hashedPassword,
-            enrollmentNo, semester
+            enrollmentNo, semester,
+            verificationToken,
+            verificationExpires,
         })
         const newUserID=newUser._id;
 
@@ -137,7 +143,7 @@ export const POST = async (req) => {
             httpOnly: true,
             secure: true,
             sameSite: 'Strict',
-            maxAge: 365 * 24 * 60 * 60 * 1000 
+            maxAge: 365 * 24 * 60 * 60 * 1000
         });
 
         return response;
