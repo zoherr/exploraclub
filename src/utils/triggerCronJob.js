@@ -2,8 +2,7 @@ import axios from 'axios';
 
 const triggerCronJob = async () => {
   try {
-  await axios.get("/api/cron");
-
+ const res =  await axios.get("/api/cron");
   } catch (error) {
   }
 };

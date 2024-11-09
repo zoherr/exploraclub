@@ -8,7 +8,7 @@ import triggerCronJob from "../../../../utils/triggerCronJob"
 connectDB()
 export const POST = async (NextRequest) => {
     try {
-        await triggerCronJob()
+        triggerCronJob()
         const body = await NextRequest.json();
         const { email, password } = body;
         if (!email || !password) {
