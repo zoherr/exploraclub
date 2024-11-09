@@ -60,7 +60,7 @@ export const POST = async (req) => {
       line-height: 1.6;
     }
       a{
-      color: #ffffff;
+      color: white;
       }
     .btn {
       display: inline-block;
@@ -85,7 +85,7 @@ export const POST = async (req) => {
     <h1>Welcome to Explora Club!</h1>
     <p>Hi ${name},</p>
     <p>We're excited to have you join us at Explora Club! Get ready to explore and enjoy.</p>
-  <a href="${verificationLink}" class="btn">Verify Now</a>
+  <a href="${verificationLink}"  class="btn">Verify Now</a>
     <p>If you have any questions, feel free to reach out to our support team at itmbuexploraclub@gmail.com.</p>
 
     <p>Welcome aboard!</p>
@@ -115,7 +115,7 @@ export const POST = async (req) => {
         };
 
 
-        await transporter.sendMail(mailOptions);
+
 
 
         const newUser = new User({
@@ -126,10 +126,10 @@ export const POST = async (req) => {
             verificationToken,
             verificationExpires,
         })
-        const newUserID=newUser._id;
+        const newUserID = newUser._id;
 
         const tokenData = {
-            newUserID ,
+            newUserID,
             name,
             email,
             enrollmentNo,
@@ -137,19 +137,19 @@ export const POST = async (req) => {
 
         }
 
-        const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1y' });
+        // const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1m' });
 
         await newUser.save();
-        const response = NextResponse.json({ message: "User saved successfully" });
-        await slack(`#user`, `${name}  Register`)
-        await slack(`#email-user`, `${name}, "${email}" Register`)
-        response.cookies.set("token", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'Strict',
-            maxAge: 365 * 24 * 60 * 60 * 1000
-        });
 
+        const response = NextResponse.json({ message: "User saved successfully" });
+
+        // response.cookies.set("token", token, {
+        //     httpOnly: true,
+        //     secure: true,
+        //     sameSite: 'Strict',
+        //     maxAge: 365 * 24 * 60 * 60 * 1000
+        // });
+        await transporter.sendMail(mailOptions);
         return response;
     } catch (error) {
         slack(`#error`, `Error User Register: ${error.message}`);
