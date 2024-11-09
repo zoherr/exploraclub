@@ -24,11 +24,9 @@ const deleteUnverifiedAccounts = async () => {
 
 export async function GET() {
     try {
-        const currentUtcTime = new Date();
-        console.log(currentUtcTime);
         await connectDB();
         await deleteUnverifiedAccounts();
-        return new Response("Cron job executed successfully",currentUtcTime, { status: 200 })
+        return new Response("Cron job executed successfully", { status: 200 })
       } catch (error) {
         return new Response("Failed to execute cron job", { status: 500 })
       }
