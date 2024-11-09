@@ -1,6 +1,7 @@
 import connectDB from '../../../utils/connectDB';
 import User from '../../../models/user.models';
 import { isBefore } from 'date-fns'; // Importing date-fns for comparison
+import { NextRequest, NextResponse } from "next/server";
 
 
 
@@ -26,8 +27,8 @@ export async function GET() {
     try {
         await connectDB();
         await deleteUnverifiedAccounts();
-        return new Response("Cron job executed successfully", { status: 200 })
+        return NextResponse.json({ message: "Cron job executed successfully" }, { status: 200 });
       } catch (error) {
-        return new Response("Failed to execute cron job", { status: 500 })
+        return NextResponse.json({ message: "Failed to execute cron job", error: error.message }, { status: 500 });
       }
   }
