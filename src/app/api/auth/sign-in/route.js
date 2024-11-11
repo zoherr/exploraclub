@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from 'jsonwebtoken';
 import slack from "../../../../services/slack"
 import bcryptjs from "bcryptjs"
-import triggerCronJob from "../../../../utils/triggerCronJob"
 connectDB()
 export const POST = async (NextRequest) => {
     try {
