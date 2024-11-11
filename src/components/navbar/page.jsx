@@ -87,7 +87,8 @@ export default function Navbar() {
                 setIsUserLoggedIn(true);
             }
         } catch (error) {
-            toast.error("Error Occurred!");
+            const errorMessage = error.response?.data?.error || "An error occurred!";
+            toast.error(errorMessage);
         } finally {
             setRegisterLoading(false);
         }
@@ -108,7 +109,8 @@ export default function Navbar() {
                 toast.success("Welcome!");
             }
         } catch (error) {
-            toast.error("Error Occurred!");
+            const errorMessage = error.response?.data?.error || "An error occurred!";
+            toast.error(errorMessage);
         } finally {
             setLoginLoading(false);
         }

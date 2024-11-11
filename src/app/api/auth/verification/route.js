@@ -1,4 +1,5 @@
 import User from "../../../../models/user.models"
+import { redis } from "../../../../utils/redis";
 import { addMinutes, isAfter } from 'date-fns';
 export const GET = async (req) => {
     const { searchParams } = new URL(req.url);
@@ -6,16 +7,23 @@ export const GET = async (req) => {
 
 
     try {
-      const user = await User.findOne({ verificationToken: token });
-      const currentUtcTime = new Date();
-      if (isAfter(currentUtcTime, new Date(user.verificationExpires))) {
-        return new Response("Verification link expired.", { status: 400 });
-      }
+        const userData  = await redis.get(token);
+        if (!userData) {
+            return new Response("Verification link expired or invalid.", { status: 400 });
+          }
+          const { name, email, hashedPassword, enrollmentNo, semester } = JSON.parse(userData);
 
-      user.isVerified = true;
-      user.verificationToken = undefined;
-      user.verificationExpires = undefined;
-      await user.save();
+          const newUser = new User({
+            name,
+            email,
+            password: hashedPassword,
+            enrollmentNo,
+            semester,
+            isVerified: true,
+          });
+          await newUser.save();
+
+          await redis.del(token);
 
       return new Response("Email successfully verified!", { status: 200 });
     } catch (error) {

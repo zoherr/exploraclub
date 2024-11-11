@@ -7,12 +7,11 @@ import slack from "../../../../services/slack"
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { addMinutes, isAfter, parseISO } from 'date-fns';
-
+import { redis } from "../../../../utils/redis"
 connectDB()
 export const POST = async (req) => {
     try {
         const body = await req.json();
-        // console.log(body);
         const { name, email, password, enrollmentNo, semester } = body;
 
         if (!name || !email || !password || !enrollmentNo) {
@@ -29,7 +28,7 @@ export const POST = async (req) => {
         const verificationLink = `https://exploraclub.vercel.app/api/auth/verification?token=${verificationToken}`;
 
         const hashedPassword = await bcryptjs.hash(password, salt);
-        //
+
         const emailTemplate = `
 <!DOCTYPE html>
 <html>
@@ -98,7 +97,7 @@ export const POST = async (req) => {
 </body>
 </html>
 `;
-        //
+
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com", // Replace with your SMTP server
             port: 465, // SMTP port
@@ -114,41 +113,12 @@ export const POST = async (req) => {
             html: emailTemplate,
         };
 
+        const userData = { name, email, hashedPassword, enrollmentNo, semester };
 
-
-
-
-        const newUser = new User({
-            name,
-            email,
-            password: hashedPassword,
-            enrollmentNo, semester,
-            verificationToken,
-            verificationExpires,
-        })
-        const newUserID = newUser._id;
-
-        const tokenData = {
-            newUserID,
-            name,
-            email,
-            enrollmentNo,
-            semester
-
-        }
-
-        // const token = jwt.sign(tokenData, process.env.JWT_SECRETKEY, { expiresIn: '1m' });
-
-        await newUser.save();
+        await redis.set(verificationToken, JSON.stringify(userData), 'EX', 300);
 
         const response = NextResponse.json({ message: "User saved successfully" });
 
-        // response.cookies.set("token", token, {
-        //     httpOnly: true,
-        //     secure: true,
-        //     sameSite: 'Strict',
-        //     maxAge: 365 * 24 * 60 * 60 * 1000
-        // });
         await transporter.sendMail(mailOptions);
         return response;
     } catch (error) {
