@@ -9,7 +9,7 @@ const redisClient =  () => {
 }
 
 const redisClient2 =  () => {
-    if(process.env.REDIS_URL){
+    if(process.env.USER_REDIS_URL){
         console.log('Redis Connected');
         return process.env.USER_REDIS_URL;
     }
