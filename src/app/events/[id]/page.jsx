@@ -244,11 +244,12 @@ const Page = ({ params }) => {
 
                             <p className="mt-5 text-lg ">
                                 <div className="words h-[40px] ">
-                                    <span className="word">“Just a few more moments!”</span>
-                                    <span className="word">“Generating your unique QR code"</span>
-                                    <span className="word">“Sending you a confirmation email”</span>
-                                    <span className="word">“Double-checking for accuracy”</span>
-                                    <span className="word">“Preparing your certificate”</span>
+                                <span className="word">\u201CJust a few more moments!\u201D</span>
+<span className="word">\u201CGenerating your unique QR code\u201D</span>
+<span className="word">\u201CSending you a confirmation email\u201D</span>
+<span className="word">\u201CDouble-checking for accuracy\u201D</span>
+<span className="word">\u201CPreparing your certificate\u201D</span>
+
                                 </div>
                             </p>
                         </div>
