@@ -7,7 +7,7 @@ import slack from "../../../../services/slack"
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { addMinutes, isAfter, parseISO } from 'date-fns';
-import { redis } from "../../../../utils/redis"
+import { redis2 } from "../../../../utils/redis"
 connectDB()
 export const POST = async (req) => {
     try {
@@ -115,7 +115,7 @@ export const POST = async (req) => {
 
         const userData = { name, email, hashedPassword, enrollmentNo, semester };
 
-        await redis.set(verificationToken, JSON.stringify(userData), 'EX', 300);
+        await redis2.set(verificationToken, JSON.stringify(userData), 'EX', 300);
 
         const response = NextResponse.json({ message: "User saved successfully" });
 
