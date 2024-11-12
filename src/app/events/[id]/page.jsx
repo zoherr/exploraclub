@@ -9,6 +9,7 @@ import { IoIosPeople } from "react-icons/io";
 import EventGallary from '../../../components/ImageGrid/EventGallary';
 import { SiTicktick } from "react-icons/si";
 import { useSelector } from "react-redux";
+import toast from 'react-hot-toast';
 
 const Page = ({ params }) => {
     const [event, setEvent] = useState(null);
@@ -21,7 +22,7 @@ const Page = ({ params }) => {
     const isRegistered = event?.registered?.includes(user?.id);
     const [loader, setLoader] = useState(false)
     const [loaderr, setLoaderr] = useState(false)
-
+    const [showLoading, setShowLoading] = useState(false)
     const isAttende = event?.attendance?.includes(user?.id);
     useEffect(() => {
         const fetchEvent = async () => {
@@ -52,17 +53,19 @@ const Page = ({ params }) => {
 
     const registerForEvent = async (members) => {
         try {
-            setLoader(true)
+
+            setShowPopup(false);
+            setShowLoading(true)
             await axios.post('/api/register', {
                 userId: user.id,
                 eventId: event._id,
                 members
             });
-            alert('Registration successful!');
-            setShowPopup(false);
-            setLoader(false)
+            toast.success('Registration successful!');
+            setShowLoading(false)
         } catch (error) {
-            alert('Failed to register.');
+            setShowLoading(false)
+            toast.error('Failed to register.');
             setLoader(false)
         }
     };
@@ -228,6 +231,28 @@ const Page = ({ params }) => {
                                 Cancel
                             </button>
                         </div>
+                    </div>
+                </div>
+            )}
+            {showLoading && (
+                <div className="fixed inset-0 bg-black bg-opacity-50  flex justify-center items-center">
+                    <div className="bg-white  p-5 rounded-lg py-5 pt-8">
+                        <div className="text-center NeueMontreal-Regular">
+                            <div
+                                className="w-16 h-16 border-4 border-dashed rounded-full animate-spin border-[#16423C] mx-auto"
+                            ></div>
+
+                            <p className="mt-5 text-lg ">
+                                <div className="words h-[40px] ">
+                                    <span className="word">“Just a few more moments!”</span>
+                                    <span className="word">“Generating your unique QR code"</span>
+                                    <span className="word">“Sending you a confirmation email”</span>
+                                    <span className="word">“Double-checking for accuracy”</span>
+                                    <span className="word">“Preparing your certificate”</span>
+                                </div>
+                            </p>
+                        </div>
+
                     </div>
                 </div>
             )}

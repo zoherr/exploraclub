@@ -1,25 +1,22 @@
-// utils/qstash.js
-import fetch from 'node-fetch';
+import { Client } from '@upstash/qstash';
+
+const qstashClient = new Client({
+  token: process.env.QSTASH_TOKEN,
+});
 
 export const sendToQStash = async (message) => {
   try {
-    const response = await fetch(process.env.QSTASH_URL, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${process.env.QSTASH_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(message),
-    });
+    console.log("Sending message to QStash:", message);
 
-    if (!response.ok) {
-      throw new Error('Failed to send message to QStash');
-    }
+    const response = await qstashClient.publishJSON(
+        message
+    );
 
-    const responseData = await response.json();
-    return responseData;
+    console.log("Response from QStash:", response);
+
+    return response;
   } catch (error) {
-    console.error('Error sending message to QStash:', error);
+    console.error('Error sending message to QStash:', error.message);
     throw error;
   }
 };

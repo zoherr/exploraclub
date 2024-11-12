@@ -2,8 +2,10 @@ import nodemailer from 'nodemailer';
 import User from '../../../../models/user.models';
 import Event from '../../../../models/event.model';
 import connectDB from "../../../../utils/connectDB";
+import { NextResponse } from 'next/server';
+
 connectDB();
-export const POST = async (req,res) => {
+export const POST = async (req, res) => {
     const { userId, eventId, qrCodeUrl, validMemberIds } = req.body;
 
     try {
@@ -54,9 +56,9 @@ export const POST = async (req,res) => {
 
         await Promise.all(memberMailPromises);
 
-        return res.status(200).json({ success: true, message: 'Emails sent successfully' });
+        return NextResponse.json({ success: true, message: "QR code sent to user, and registration emails sent to members." }, { status: 201 });
     } catch (error) {
         console.error('Error sending emails:', error);
-        return res.status(500).json({ success: false, message: 'Error sending emails' });
+        return NextResponse.json({ success: false, message: "An error occurred", error: error.message }, { status: 500 });
     }
 }

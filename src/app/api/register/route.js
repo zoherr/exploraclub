@@ -6,24 +6,20 @@ import Register from '../../../models/register.models';
 import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
-import { sendToQStash } from '../../../utils/qstash';
 
 connectDB();
 
 export const POST = async (req) => {
-    await connectDB();
     const { userId, eventId, members } = await req.json();
     try {
         const user = await User.findById(userId);
         if (!user) {
             return NextResponse.json({ success: false, message: "User not found" }, { status: 404 });
         }
-
         const event = await Event.findById(eventId);
         if (!event) {
             return NextResponse.json({ success: false, message: "Event not found" }, { status: 404 });
         }
-
         if (event.registered.includes(user._id)) {
             return NextResponse.json({ success: false, message: "User already registered for this event" }, { status: 400 });
         }
@@ -68,18 +64,51 @@ export const POST = async (req) => {
 
         register.qr = qrCodeUrl;
         await register.save();
+// -----------------------------------------------------------------------
 
-const qstashMessage = {
-    url: 'https://exploraclub.vercel.app/api/qstash/send-registration-emails',
-    body: JSON.stringify({
-        userId,
-        eventId,
-        qrCodeUrl,
-        validMemberIds
-    }),
-};
+        const transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            auth: {
+                user: 'itmbuexploraclub@gmail.com',
+                pass: process.env.SMTP_PASSWORD,
+            },
+        });
 
-await sendToQStash(qstashMessage);
+        const userMailOptions = {
+            from: 'itmbuexploraclub@gmail.com',
+            to: user.email,
+            subject: `Your Event Registration QR Code`,
+            text: `Thank you for registering for the ${event.name}! Here is your QR code:`,
+            html: `<p>Thank you for registering for the event!</p>
+                   <p>Here is your QR code:</p>
+                   <img src="cid:qrCodeImage" alt="Your QR Code" style="width: 200px; height: auto;" />`,
+            attachments: [
+                {
+                    filename: 'qrcode.png',
+                    path: qrCodeUrl,
+                    cid: 'qrCodeImage'
+                },
+            ]
+        };
+        await transporter.sendMail(userMailOptions);
+
+        const memberMailPromises = validMemberIds.map(async (memberId) => {
+            const member = await User.findById(memberId);
+            if (member) {
+                const memberMailOptions = {
+                    from: 'itmbuexploraclub@gmail.com',
+                    to: member.email,
+                    subject: `Event Registration Confirmation`,
+                    text: `Thank you for registering for the ${event.name}!`,
+                    html: `<p>You have been registered as a Team member for the ${event.name} with ${user.name}.</p>
+                           <p>Looking forward to seeing you at the event!</p>`
+                };
+                return transporter.sendMail(memberMailOptions);
+            }
+        });
+
+        await Promise.all(memberMailPromises);
 // -----------------------------------------------------------------------
         return NextResponse.json({ success: true, message: "Registration successful. QR code sent to user, and registration emails sent to members." }, { status: 201 });
 
