@@ -1,16 +1,15 @@
-"use client";
+'use client';
 import dynamic from 'next/dynamic';
 import React, { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { isMobile } from 'react-device-detect';
-// Dynamically import 'isMobile' from 'react-device-detect' and add error handling
 
 
 // Dynamically import 'QrReader'
 const QrReader = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
-  loading: () => <p>Loading QR Scanner...</p>, // Show loading fallback while QrReader is being imported
+  loading: () => <p>Loading QR Scanner...</p>,
 });
 
 const QRCodeScanner = () => {

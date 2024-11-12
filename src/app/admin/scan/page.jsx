@@ -6,9 +6,9 @@ import VolunteerProtected from "../../../utils/VolunteerProtected";
 const page = () => {
     return (
         <div>
-            {/* <VolunteerProtected> */}
+            <VolunteerProtected>
                 <QRCodeScanner />
-            {/* </VolunteerProtected> */}
+            </VolunteerProtected>
         </div>
     )
 }

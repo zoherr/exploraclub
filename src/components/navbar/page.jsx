@@ -13,6 +13,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { setUser, logout } from "../../redux/userSlice";
 import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 import { LuLogOut } from "react-icons/lu";
+import { FaRegCircleCheck } from "react-icons/fa6";
+
 
 export default function Navbar() {
     const [loginLoading, setLoginLoading] = useState(false);
@@ -63,7 +65,7 @@ export default function Navbar() {
         email: "",
         password: "",
         enrollmentNo: "",
-        semester: "" // Set initial value
+        semester: 1
     });
 
     const [loginUser, setLoginUser] = useState({
@@ -81,10 +83,9 @@ export default function Navbar() {
         try {
             const response = await axios.post('/api/auth/sign-up', registerUser);
             if (response.status === 200) {
-                setOpen(false);
-                alert("Verify your email to unlock your account!");
+                setSection(2);
                 toast.success('Registration Successful!');
-                setIsUserLoggedIn(true);
+                
             }
         } catch (error) {
             const errorMessage = error.response?.data?.error || "An error occurred!";
@@ -291,6 +292,22 @@ export default function Navbar() {
                                         Sign in
                                     </span>
                                 </h5>
+                            </>
+                        }
+                           {
+                            section === 2 && <>
+                                <p className="text-[25px] text-[#fff]  font-[500] text-center py-2 mb-6">Registeration Done</p>
+                                <div className="flex justify-center mb-5">
+                                <FaRegCircleCheck className="text-white text-center text-[5rem]" />
+                                </div>
+
+
+<p className="text-white text-center">Check Your Email To verify Your Account!</p> <br />
+<p className="text-white text-center">(Within 3 Minutes)</p>
+                                    <button onClick={() => { setOpen(!open) }} type="submit" className={`mt-5  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>   Okay
+                                    </button>
+
+
                             </>
                         }
                     </div>
