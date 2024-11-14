@@ -30,7 +30,7 @@
     "**/*.tsx"
 , "src/utils/connectDB.js",
 "src/@types/**/*.d.ts" // Add this line to include custom type definitions
-],
+, "tailwind.config.js"],
   "exclude": [
     "node_modules"
   ]

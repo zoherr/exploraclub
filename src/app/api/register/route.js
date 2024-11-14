@@ -7,9 +7,10 @@ import QRCode from 'qrcode';
 import nodemailer from 'nodemailer';
 import slack from "../../../services/slack";
 
-connectDB();
+;
 
 export const POST = async (req) => {
+    await connectDB()
     const { userId, eventId, members } = await req.json();
     try {
         const user = await User.findById(userId);
@@ -78,11 +79,29 @@ export const POST = async (req) => {
         const userMailOptions = {
             from: 'itmbuexploraclub@gmail.com',
             to: user.email,
-            subject: `Your Event Registration QR Code`,
-            text: `Thank you for registering for the ${event.name}! Here is your QR code:`,
-            html: `<p>Thank you for registering for the event!</p>
-                   <p>Here is your QR code:</p>
-                   <img src="cid:qrCodeImage" alt="Your QR Code" style="width: 200px; height: auto;" />`,
+            subject: `🎫 Your Registration for ${event.name} – Here's Your QR Code!`,
+            text: `Hello ${user.name},\n\nThank you for registering for ${event.name}! Your QR code for event access is attached below.\n\nBest regards,\nThe ExplorA Club Team`,
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333; background-color: #fff; padding: 20px; border-radius: 8px;">
+                    <h2 style="color: #4CAF50; text-align: center;">Welcome to ${event.name}, ${user.name}!</h2>
+                    <p style="font-size: 1.1em; text-align: center;">We’re thrilled to have you join us. Here’s your personal QR code to access the event.</p>
+
+                    <div style="text-align: center; margin: 30px 0;">
+                        <img src="cid:qrCodeImage" alt="Your QR Code" style="width: 200px; height: auto; border: 2px solid #4CAF50; padding: 15px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);" />
+                    </div>
+
+                    <p style="font-size: 0.9em; color: #666; text-align: center;">Please show this code at the entrance for a seamless entry.</p>
+
+                    <p style="text-align: center; font-size: 1.1em; margin-top: 30px;">
+                        Looking forward to seeing you there! 🎉<br>
+                        <strong>The Explora Club Team</strong>
+                    </p>
+
+                    <footer style="font-size: 0.8em; color: #aaa; text-align: center; margin-top: 30px;">
+                        <p>If you have any questions, reach us at <a href="mailto:itmbuexploraclub@gmail.com" style="color: #4CAF50;">itmbuexploraclub@gmail.com</a></p>
+                    </footer>
+                </div>
+            `,
             attachments: [
                 {
                     filename: 'qrcode.png',
@@ -91,6 +110,7 @@ export const POST = async (req) => {
                 },
             ]
         };
+
         await transporter.sendMail(userMailOptions);
 
         const memberMailPromises = validMemberIds.map(async (memberId) => {
@@ -99,14 +119,25 @@ export const POST = async (req) => {
                 const memberMailOptions = {
                     from: 'itmbuexploraclub@gmail.com',
                     to: member.email,
-                    subject: `Event Registration Confirmation`,
-                    text: `Thank you for registering for the ${event.name}!`,
-                    html: `<p>You have been registered as a Team member for the ${event.name} with ${user.name}.</p>
-                           <p>Looking forward to seeing you at the event!</p>`
+                    subject: `🎉 Confirmation: You're Registered for ${event.name}! 🎉`,
+                    text: `Hello ${member.name},\n\nThank you for joining ${user.name}'s team for the ${event.name}! We look forward to seeing you there.\n\nBest regards,\nThe Explora Club Team`,
+                    html: `
+                        <div style="font-family: Arial, sans-serif; color: #333; background-color: #fff; padding: 20px; border-radius: 8px;">
+                            <h2 style="color: #4CAF50; text-align: center;">You're Registered as a Team Member for ${event.name}!</h2>
+                            <p style="font-size: 1.1em; text-align: center;">Hello ${member.name},</p>
+                            <p style="text-align: center;">We are excited to have you join <strong>${user.name}</strong> for this event.</p>
+                            <p style="text-align: center; font-size: 1.1em; margin-top: 20px;">Looking forward to seeing you there!</p>
+                            <p style="text-align: center; color: #666;">Best wishes,<br><strong>The ExplorA Club Team</strong></p>
+                            <footer style="font-size: 0.8em; color: #aaa; text-align: center; margin-top: 30px;">
+                                <p>Need assistance? Contact us at <a href="mailto:itmbuexploraclub@gmail.com" style="color: #4CAF50;">itmbuexploraclub@gmail.com</a></p>
+                            </footer>
+                        </div>
+                    `
                 };
                 return transporter.sendMail(memberMailOptions);
             }
         });
+
 
         await Promise.all(memberMailPromises);
 // -----------------------------------------------------------------------
