@@ -19,11 +19,6 @@ const geistMono = localFont({
     weight: "100 900",
 });
 
-// export const metadata = {
-//   title: "Explora Club",
-//   description: "ITM sls Baroda University, Explora club, itmbu,itm,itm explora club,club,explora club",
-// };
-
 export default function RootLayout({ children }) {
 
     return (
@@ -36,7 +31,7 @@ export default function RootLayout({ children }) {
                     <Navbar />
                     {children}
                     <SpeedInsights />
-<Analytics/>
+                    <Analytics />
                     {/* <  Footer /> */}
                 </Provider>
             </body>

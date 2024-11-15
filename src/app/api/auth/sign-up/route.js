@@ -23,7 +23,6 @@ export const POST = async (req) => {
             return new Response("enrollmentNo already exist", { status: 400 });
         }
         const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationExpires = addMinutes(new Date(), 3);
         const salt = await bcryptjs.genSalt(12);
         const verificationLink = `https://exploraclub.vercel.app/api/auth/verification?token=${verificationToken}`;
 
@@ -124,6 +123,6 @@ export const POST = async (req) => {
     } catch (error) {
         slack(`#error`, `Error User Register: ${error.message}`);
 
-        console.log(error);
+        return NextResponse.json({ error: error.message }, { status: 500 });
     }
 }

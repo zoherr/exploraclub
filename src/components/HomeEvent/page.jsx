@@ -4,6 +4,7 @@ import Loader from '../Loading';
 import Image from "next/image";
 
 import axios from 'axios';
+
 const HomeEvent = () => {
     const [event, setEvent] = useState([]);
     const [loading, setLoading] = useState(true);
