@@ -8,7 +8,7 @@ const Page = () => {
     return (
         <div className="">
             <div className="flex justify-center mt-5">
-                <div className="flex bg-[#16423C] text-white px-1 py-1 rounded-lg gap-1 shadow-md">
+                <div className="flex bg-[#4967FF] text-white px-1 py-1 rounded-lg gap-1 shadow-md">
                     <div
                         onClick={() => setSection('Upcoming')}
                         className={`w-24 text-center py-2 rounded-md cursor-pointer ${section === 'Upcoming' ? 'bg-white text-gray-900' : 'bg-transparent'

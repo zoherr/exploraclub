@@ -1,8 +1,10 @@
-"use client"
-import React, { useEffect, useState } from 'react'
+"use client";
+import { motion, useTransform, useScroll, useViewportScroll } from "framer-motion";
+import Link from 'next/link'; // Import the Link component
+
+import React, { useEffect, useState } from 'react';
 import Loader from '../Loading';
 import Image from "next/image";
-
 import axios from 'axios';
 
 const HomeEvent = () => {
@@ -26,68 +28,51 @@ const HomeEvent = () => {
         fetchEvents();
     }, []);
 
-
-
     return (
-        <div className='  border-[#DCDCDC]  border-t-[1px]'>
-
-            {
-                event.filter(event => event.isCompleted).map((item, index) => (
-                    <div key={index} className="sm:flex pt-[1.5rem] sm:pt-[2rem] NeueMontreal-Regular justify-between text-black border-[#DCDCDC] pb-9  border-b-[1px]">
-
-                        <p className='sm:text-xl text-2xl sm:w-[20%] '>{item.name}</p>
-
-                        <div className="flex justify-center sm:hidden ">
-                            <Image
-                                src={item.image}
-                                alt="Description of image"
-                                width={250}
-                                height={250}
-                                className='sm:mt-0 mt-8 rounded-xl '
-                            />
-                        </div>
-
-                        <div className=" sm:hidden sm:w-[25%] mt-10 sm:mt-0">
-                            <p>{item.shortDesc.slice(0, 300)}...</p>
-                        </div>
-
-                        <div className="mt-10 sm:mt-0 ">
-                            <p className='sm:text-lg text-xl underline sm:w-[20%]'>Winners:</p>
-                            <div className="mt-5">
-                                <p className='text-lg sm:w-[25%] block sm:hidden'>{item.winner}</p>
-                                <div className="mt-5 sm:block hidden">
-                                    {item.winner.split(',').map((part, index) => (
-                                        <span key={index}>
-                                            {part.trim()}
-                                            {index < item.winner.split(',').length - 1 && <br />}
-                                        </span>
-                                    ))}
+        <div className="border-[#DCDCDC] text-white border-t-[1px] ">
+            {loading ? (
+                <div className=""></div>
+            ) : (
+                <div className="grid grid-cols-1 mt-10 sm:grid-cols-2 gap-20 sm:gap-10 NeueMontreal-Regular">
+                    {event
+                        .filter((event) => event.isCompleted)
+                        .map((item, index) => (
+                            <motion.div
+                            layoutId="modal"
+                            initial={{ y: 20 }}
+                            animate={{ y: 0 }}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                                key={index}
+                                className="border sm:flex gap-5 border-gray-300 rounded-lg p-4 bg-white shadow-md"
+                            >
+                                {/* Image Section */}
+                                <div className="mb-4 sm:w-[30%]">
+                                    <Image
+                                        src={item.image}
+                                        alt={item.name}
+                                        width={500}
+                                        height={500}
+                                        className="rounded-lg mx-auto"
+                                    />
                                 </div>
-                            </div>
-                        </div>
 
-                        <div className=" sm:block hidden sm:w-[25%] mt-10 sm:mt-0">
-                            <p>{item.shortDesc.slice(0, 300)}...</p>
-                        </div>
+                                {/* Text Section */}
+                                <Link href={`/events/${item._id}`}  className='ml-2 mt-2 sm:w-[70%] sm:mb-0 mb-7'>
+                                    <h3 className="mb-2 text-2xl font-semibold text-gray-800 ">
+                                        {item.name}
+                                    </h3>
+                                    <p className="text-gray-600  mt-5">
+                                        {item.shortDesc.slice(0, 200)}...
+                                    </p>
 
-                        <div className="sm:block hidden ">
-                            <Image
-                                src={item.image}
-                                alt="Description of image"
-                                width={250}
-                                height={250}
-                                className='sm:mt-0 mt-8 rounded-xl '
-                            />
-                        </div>
-
-
-
-                    </div>
-                ))
-            }
-
+                                </Link>
+                            </motion.div>
+                        ))}
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
-export default HomeEvent
+export default HomeEvent;

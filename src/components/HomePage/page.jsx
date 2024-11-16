@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { Cover } from "../../components/ui/cover";
 
 function HomePage() {
     return (
-        <div className="px-4 sm:px-16 mt-16 sm:mt-20">
+        <div className="px-4 sm:px-16 pt-16 sm:pt-20">
             <div className="sm:flex">
                 <div className="sm:w-[75%]">
-                    <h1 className="text-[3.5rem] text-[#1D2026] sm:text-[7.5rem]  sm:leading-[7rem] plus-jakarta-sans-thin">
-                        Welcome to  <br /> <span className="mt-10 sm:mt-0 font-bold text-[4.5rem] leading-10   sm:text-[7rem]">EXPLORA CLUB.</span>
+                    <h1 className="text-[3.5rem] text-[#1D2026] sm:text-[7.5rem]  sm:leading-[7rem] plus-jakarta-sans-thin"><span className="sm:mb-10"> Welcome to </span> <br /> <Cover>EXPLORA CLUB.</Cover>
                     </h1>
                 </div>
 

@@ -139,7 +139,7 @@ const Page = ({ params }) => {
                         }
 
 
-                        <div className="flex items-center mt-8 gap-2 bg-[#16423C] px-3 py-2 rounded-xl">
+                        <div className="flex items-center mt-8 gap-2 bg-[#4967FF] px-3 py-2 rounded-xl">
                             <FaCalendarCheck className="text-5xl text-[#fff]" />
                             <div className="text-white text-lg font-medium">
                                 <p>{event.time}</p>
@@ -158,7 +158,7 @@ const Page = ({ params }) => {
                             <span className='font-semibold mr-2'>Location:</span> {event.location}
                         </div>
                         {
-                            event.isCompleted && (
+                            (event.isCompleted && event.winner )&& (
                                 <div className="mt-6 text-xl">
                                     <p className='underline'>Winners:</p>
                                     <p className='sm:w-[21rem] text-lg'>{event.winner}</p>
@@ -170,7 +170,7 @@ const Page = ({ params }) => {
                 <div className="sm:w-[50%] NeueMontreal-Regular sm:mt-0 mt-10">
                     <h1 className='text-3xl font-bold'>{event.name}</h1>
                     <div className="mt-5 border-b-[2.5px] opacity-35"></div>
-                    <div className='mt-10 NeueMontreal-Regular'>
+                    <div className='mt-10 mb-10 NeueMontreal-Regular'>
                         {parse(event.description)}
                     </div>
                     <EventGallary images={event.eventImages} />

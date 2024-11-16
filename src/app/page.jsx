@@ -1,6 +1,7 @@
 "use client";  // Marking this as a client-side component
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import CustomCursor from '../components/CustomCursor';
 
 import HomeMarquee from "../components/Marquee/home";
 import Navbar from "../components/navbar/page";
@@ -11,30 +12,31 @@ import HomePage from "../components/HomePage/page";
 import Objective from "../components/Objective"
 import Loader from "../components/Loading"
 import Footer from "../components/Footer/index"
-
+import OurTeam from "../components/OurTeam"
+import Testimonial from "../components/Testimonial/index"
 const Home = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Set a timeout for 5 seconds
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 2500); // 5000 milliseconds = 5 seconds
+        }, 2500);
 
-        // Cleanup the timeout when the component unmounts
         return () => clearTimeout(timer);
     }, []);
     if (loading) {
-        return <Loader />; // Loading state
+        return <Loader />;
     }
     return (
-        <div >
+        <div className="">
             <div className=" min-w-[100%]  ">
+            {/* <CustomCursor label="Anonymous" /> */}
+
                 <HomePage />
                 <Objective />
-                {/* <HomeMarquee /> */}
-                {/* <Vision /> */}
-                {/* <Events /> */}
+                <Events />
+                <OurTeam />
+                <Testimonial/>
                 <  Footer />
 
             </div>

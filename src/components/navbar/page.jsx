@@ -33,7 +33,6 @@ export default function Navbar() {
     const navbarItem = [
         { name: 'Home', path: '/' },
         { name: 'Events', path: '/events' },
-        { name: 'About Us', path: '/about-us' },
         { name: 'Gallery', path: '/gallery' },
         { name: 'Contact Us', path: '/#contact-us' }
     ];
