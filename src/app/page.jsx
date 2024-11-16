@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from 'react';
 import Vision from "../components/Vision/Vision";
 import Events from "../components/Events/Events";
 import HomePage from "../components/HomePage/page";
-
+import Objective from "../components/Objective"
 import Loader from "../components/Loading"
-import Footer from "../components/Footer/page"
+import Footer from "../components/Footer/index"
 
 const Home = () => {
     const [loading, setLoading] = useState(true);
@@ -30,12 +30,12 @@ const Home = () => {
     return (
         <div >
             <div className=" min-w-[100%]  ">
-
-
                 <HomePage />
-                <HomeMarquee />
-                <Vision />
-                <Events />
+                <Objective />
+                {/* <HomeMarquee /> */}
+                {/* <Vision /> */}
+                {/* <Events /> */}
+                <  Footer />
 
             </div>
         </div>

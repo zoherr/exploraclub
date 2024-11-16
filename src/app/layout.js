@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Provider } from 'react-redux';
 import { store } from "../redux/store"
 import Navbar from "../components/navbar/page"
-import Footer from "../components/Footer/page"
+import Footer from "../components/Footer/index"
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",
     variable: "--font-geist-sans",
@@ -32,7 +32,6 @@ export default function RootLayout({ children }) {
                     {children}
                     <SpeedInsights />
                     <Analytics />
-                    {/* <  Footer /> */}
                 </Provider>
             </body>
         </html>

@@ -7,7 +7,7 @@ import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from 'react-redux';
 import slack from "../../services/slack"
 import Link from 'next/link';
-import { usePathname } from 'next/navigation'; // Use usePathname instead of useRouter
+import { usePathname } from 'next/navigation';
 import { useSession, signIn, signOut, getProviders } from "next-auth/react"
 import toast, { Toaster } from 'react-hot-toast';
 import { setUser, logout } from "../../redux/userSlice";
@@ -20,7 +20,7 @@ export default function Navbar() {
     const [loginLoading, setLoginLoading] = useState(false);
     const [registerLoading, setRegisterLoading] = useState(false);
     const dispatch = useDispatch();
-    const [performLogout] = useLogoutMutation(); // Rename to avoid conflict with userSlice's logout action
+    const [performLogout] = useLogoutMutation();
     const { data, error, isLoading, refetch } = useGetUserInfoQuery();
     const [userData, setUserData] = useState(null);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
@@ -85,7 +85,7 @@ export default function Navbar() {
             if (response.status === 200) {
                 setSection(2);
                 toast.success('Registration Successful!');
-                
+
             }
         } catch (error) {
             const errorMessage = error.response?.data?.error || "An error occurred!";
@@ -137,7 +137,7 @@ export default function Navbar() {
                                 <p style={{
                                     textDecoration: pathname === item.path ? 'underline' : 'none',
 
-                                }} className="NeueMontreal-Regular text-[#16423C] underline-offset-1 font-normal text-lg hover:underline  cursor-pointer"  >{item.name} </p> </Link>
+                                }} className="NeueMontreal-Regular text-[#000] underline-offset-1 font-normal text-lg hover:underline  cursor-pointer"  >{item.name} </p> </Link>
                         )
                         )
                     }
@@ -149,13 +149,13 @@ export default function Navbar() {
                 {isUserLoggedIn ? (<>
                     <div className="flex gap-6">
                         {/* <button className="text-[#4AFAAB] font-semibold">Login</button> */}
-                        <button onClick={handleLogout} className=" border border-[#004D43] text-[#004D43] font-semibold px-7 py-2 rounded-full"><LuLogOut /></button>
+                        <button onClick={handleLogout} className=" border border-[#004D43] text-[#4967FF] font-semibold px-7 py-2 rounded-full"><LuLogOut /></button>
 
                     </div>
                 </>) : (<>
                     <div className="flex gap-6">
                         {/* <button className="text-[#4AFAAB] font-semibold">Login</button> */}
-                        <button onClick={() => (setOpen(!open))} className="  bg-[#004D43] py-2 text-[#fff] font-semibold   rounded-lg px-5">Join</button>
+                        <button onClick={() => (setOpen(!open))} className="NeueMontreal-Regular  bg-[#4967FF] py-2 text-[#fff]    rounded-full px-7">Join</button>
 
                     </div>
                 </>)}
@@ -178,14 +178,14 @@ export default function Navbar() {
                         {isUserLoggedIn ? (<>
                             <div className="flex gap-2 items-center">
                                 {/* <button className="text-[#4AFAAB] font-semibold">Join</button> */}
-                                <button onClick={handleLogout} className={` bg-[#004D43] py-2 text-[#fff] font-semibold px-3  rounded-lg`}><LuLogOut /></button>
+                                <button onClick={handleLogout} className={` bg-[#4967FF] py-2 text-[#fff] font-semibold px-3  rounded-lg`}><LuLogOut /></button>
                                 <RiMenu2Fill className="text-2xl mr-1" onClick={() => { setIsMenuOpen(!isMenuOpen) }} />
 
                             </div>
                         </>) : (<>
                             <div className="flex gap-5 items-center">
                                 {/* <button className="text-[#4AFAAB] font-semibold">Join</button> */}
-                                <button onClick={() => { setOpen(!open) }} className={` bg-[#004D43]  text-[#fff] font-semibold px-3 py-1 rounded-lg`}>Join</button>
+                                <button onClick={() => { setOpen(!open) }} className={` bg-[#4967FF]  text-[#fff] font-semibold px-3 py-1 rounded-lg`}>Join</button>
                                 <RiMenu2Fill className="text-2xl mr-1" onClick={() => { setIsMenuOpen(!isMenuOpen) }} />
 
                             </div>

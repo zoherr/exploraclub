@@ -43,17 +43,14 @@ const Page = ({ params }) => {
     const handleJoinClick = () => {
 
         if (event.teamMember === 1) {
-            // Directly register with an empty array for team members
             registerForEvent([]);
         } else {
-            // Show popup for selecting team members
             setShowPopup(true);
         }
     };
 
     const registerForEvent = async (members) => {
         try {
-
             setShowPopup(false);
             setShowLoading(true)
             await axios.post('/api/register', {
@@ -212,7 +209,7 @@ const Page = ({ params }) => {
                                 placeholder="Enter Enrollment Number"
                                 onChange={(e) => {
                                     const newEnrollmentNos = [...enrollmentNos];
-                                    newEnrollmentNos[index] = e.target.value;
+                                    newEnrollmentNos[index] = e.target.value.toUpperCase();
                                     setEnrollmentNos(newEnrollmentNos);
                                 }}
                             />

@@ -112,7 +112,7 @@ export const POST = async (req) => {
             html: emailTemplate,
         };
 
-        const userData = { name, email, hashedPassword, enrollmentNo, semester };
+        const userData = { name, email, hashedPassword,enrollmentNo: enrollmentNo.toUpperCase(), semester };
 
         await redis2.set(verificationToken, JSON.stringify(userData), 'EX', 300);
 
