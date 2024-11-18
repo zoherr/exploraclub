@@ -1,12 +1,24 @@
-"use client";;
-import React, { useId } from "react";
+"use client";
+import React, { useId, useMemo } from "react";
 import { useEffect, useState } from "react";
 import Particles, { initParticlesEngine } from "@tsparticles/react";
+import type { Container, SingleOrMultiple } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { cn } from "../../lib/utils";
 import { motion, useAnimation } from "framer-motion";
 
-export const SparklesCore = (props) => {
+type ParticlesProps = {
+  id?: string;
+  className?: string;
+  background?: string;
+  particleSize?: number;
+  minSize?: number;
+  maxSize?: number;
+  speed?: number;
+  particleColor?: string;
+  particleDensity?: number;
+};
+export const SparklesCore = (props: ParticlesProps) => {
   const {
     id,
     className,
@@ -27,7 +39,7 @@ export const SparklesCore = (props) => {
   }, []);
   const controls = useAnimation();
 
-  const particlesLoaded = async (container) => {
+  const particlesLoaded = async (container?: Container) => {
     if (container) {
       controls.start({
         opacity: 1,
@@ -40,7 +52,7 @@ export const SparklesCore = (props) => {
 
   const generatedId = useId();
   return (
-    (<motion.div animate={controls} className={cn("opacity-0", className)}>
+    <motion.div animate={controls} className={cn("opacity-0", className)}>
       {init && (
         <Particles
           id={id || generatedId}
@@ -61,14 +73,14 @@ export const SparklesCore = (props) => {
             interactivity: {
               events: {
                 onClick: {
-                  enable: false,
+                  enable: true,
                   mode: "push",
                 },
                 onHover: {
                   enable: false,
                   mode: "repulse",
                 },
-                resize: true,
+                resize: true as any,
               },
               modes: {
                 push: {
@@ -145,7 +157,7 @@ export const SparklesCore = (props) => {
                 close: true,
                 fill: true,
                 options: {},
-                type: {},
+                type: {} as SingleOrMultiple<string> | undefined,
               },
               groups: {},
               move: {
@@ -414,8 +426,9 @@ export const SparklesCore = (props) => {
               },
             },
             detectRetina: true,
-          }} />
+          }}
+        />
       )}
-    </motion.div>)
+    </motion.div>
   );
 };
