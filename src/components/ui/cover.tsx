@@ -70,7 +70,7 @@ export const Cover = ({
                 background="transparent"
                 minSize={0.4}
                 maxSize={1}
-                particleDensity={500}
+                particleDensity={35}
                 className="w-full h-full"
                 particleColor="#FFFFFF"
               />
