@@ -38,10 +38,9 @@ const HomeEvent = () => {
                         .filter((event) => event.isCompleted)
                         .map((item, index) => (
                             <motion.div
-                            layoutId="modal"
                             initial={{ y: 20 }}
                             animate={{ y: 0 }}
-                            whileHover={{ scale: 1.1 }}
+                            whileHover={{ scale: 1.1,backgroundColor:"#EBFF57",color:"#f0f0f0" }}
                             whileTap={{ scale: 0.9 }}
                                 key={index}
                                 className="border sm:flex gap-5 border-gray-300 rounded-lg p-4 bg-white shadow-md"

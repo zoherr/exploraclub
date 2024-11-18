@@ -82,7 +82,7 @@ const ManageEvent = () => {
     return (
         <div className='pt-6 sm:pt-8 sm:px-20 px-3'>
             {event.map((item, index) => (
-                <div key={index} className="sm:flex bg-[#004D43] rounded-lg sm:py-5 py-4  mt-7 sm:px-6 px-3 text-[#fff] sm:items-center sm:justify-between border border-gray-300">
+                <div key={index} className="sm:flex bg-[#29292B] rounded-lg sm:py-5 py-4  mt-7 sm:px-6 px-3 text-[#fff] sm:items-center sm:justify-between border border-gray-300">
                     <div className="sm:flex-1">
                         <p className='sm:text-2xl text-lg font-semibold NeueMontreal-Regular'>{item.name}</p>
                     </div>

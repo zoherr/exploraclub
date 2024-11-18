@@ -32,14 +32,14 @@ const page = () => {
                 <div className="flex justify-center mt-9">
                     <div className="">
                         <Link href="/admin/scan" className="">
-                            <div className="my-5 sm:hidden block px-5 bg-[#16423C] py-5 text-white rounded-full">
+                            <div className="my-5 sm:hidden block px-5 bg-[#29292B] py-5 text-white rounded-full">
                                 <h1 className="text-xl flex items-center justify-center gap-5" >Scan Attendance <MdOutlineDocumentScanner className="text-2xl" />
                                 </h1>
                             </div>
                         </Link>
 
                         <Link href="/admin/create-event" className="">
-                            <div className="my-5  px-5 bg-[#16423C] py-5 text-white rounded-full">
+                            <div className="my-5  px-5 bg-[#29292B] py-5 text-white rounded-full">
                                 <h1 className="text-xl flex items-center justify-center gap-5" >Create Event
                                     <IoCreate className="text-2xl" />
                                 </h1>
@@ -47,7 +47,7 @@ const page = () => {
                         </Link>
 
                         <Link href="/admin/manage-event" className="">
-                            <div className="my-5  px-5 bg-[#16423C] py-5 text-white rounded-full">
+                            <div className="my-5  px-5 bg-[#29292B] py-5 text-white rounded-full">
                                 <h1 className="text-xl flex items-center gap-5 justify-center" >Manage Event
                                     <VscTools className="text-2xl" />
 
@@ -56,7 +56,7 @@ const page = () => {
                         </Link>
 
                         <Link href="/admin/add-images" className="">
-                            <div className="my-5  px-5 bg-[#16423C] py-5 text-white rounded-full">
+                            <div className="my-5  px-5 bg-[#29292B] py-5 text-white rounded-full">
                                 <h1 className="text-xl flex items-center gap-5 justify-center" >Add Images
                                     <MdAddAPhoto className="text-2xl" />
 

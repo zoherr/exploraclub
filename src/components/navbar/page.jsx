@@ -166,9 +166,9 @@ export default function Navbar() {
                 <div className="">
                     <Image
                         src="https://i.ibb.co/ZdsyCMX/Logo-removebg-1.png"
-                        alt="Description of image"  // Alt text for accessibility
-                        width={40}                // Image width
-                        height={40}               // Image height
+                        alt="Description of image"
+                        width={40}
+                        height={40}
                     />
                 </div>
                 <div className="hidden  gap-7"></div>
@@ -186,11 +186,8 @@ export default function Navbar() {
                                 {/* <button className="text-[#4AFAAB] font-semibold">Join</button> */}
                                 <button onClick={() => { setOpen(!open) }} className={` bg-[#4967FF]  text-[#fff] font-semibold px-3 py-1 rounded-lg`}>Join</button>
                                 <RiMenu2Fill className="text-2xl mr-1" onClick={() => { setIsMenuOpen(!isMenuOpen) }} />
-
                             </div>
                         </>)}</>
-
-
                 }
 
             </div>
@@ -218,7 +215,7 @@ export default function Navbar() {
             </>}
             {
                 open &&
-                <div className="z-50  animate_top shadow-slate-700 shadow-4xl absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-[90%] m-auto flex justify-center sm:w-[450px] bg-[#004D43]  rounded-[15px] backdrop-blur-[0.5rem] pt-4 pb-5 outline-none   ">
+                <div className="z-50  animate_top shadow-slate-700 shadow-4xl absolute left-[50%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-[90%] m-auto flex justify-center sm:w-[450px] bg-[#29292B]  rounded-[15px] backdrop-blur-[0.5rem] pt-4 pb-5 outline-none   ">
                     <div className="w-[90%]">
                         {
                             section === 0 && <>

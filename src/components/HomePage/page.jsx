@@ -8,8 +8,9 @@ function HomePage() {
         <div className="px-4 sm:px-16 pt-16 sm:pt-20">
             <div className="sm:flex">
                 <div className="sm:w-[75%]">
-                    <h1 className="text-[3.5rem] text-[#1D2026] sm:text-[7.5rem]  sm:leading-[7rem] plus-jakarta-sans-thin"><span className="sm:mb-10"> Welcome to </span> <br /> <Cover>EXPLORA CLUB.</Cover>
+                    <h1 className="text-[3.5rem] text-[#1D2026] sm:text-[7.5rem]  sm:leading-[7rem] poppins-regular"> Welcome to
                     </h1>
+                    <h1 className="sm:mt-6 font-bold sm:text-[7rem] text-[3rem] plus-jakarta-sans-bold"><Cover>EXPLORA CLUB.</Cover></h1>
                 </div>
 
                 <div className="NeueMontreal-Regular w-[75%] mt-10 sm:mt-20 sm:w-[25%] text-sm sm:ml-5 ml-1">
