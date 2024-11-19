@@ -14,6 +14,7 @@ import { setUser, logout } from "../../redux/userSlice";
 import { useGetUserInfoQuery, useLogoutMutation } from "../../redux/userApi"
 import { LuLogOut } from "react-icons/lu";
 import { FaRegCircleCheck } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 
 export default function Navbar() {
@@ -25,7 +26,10 @@ export default function Navbar() {
     const [userData, setUserData] = useState(null);
     const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
     const pathname = usePathname();
-
+    const menuVariants = {
+        hidden: { x: "100%" },
+        visible: { x: 0 },
+    };
     const [open, setOpen] = useState(false);
     const [section, setSection] = useState(0);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +38,6 @@ export default function Navbar() {
         { name: 'Home', path: '/' },
         { name: 'Events', path: '/events' },
         { name: 'Gallery', path: '/gallery' },
-        { name: 'Contact Us', path: '/#contact-us' }
     ];
 
     const handleLogout = async () => {
@@ -162,7 +165,7 @@ export default function Navbar() {
 
             </div>
             {/* Mobile */}
-            <div className=" items-center gap-3 sticky top-0 justify-between flex px-[1rem] pt-4 py-3  bg-opacity-0  sm:hidden   text-[#004D43] ">
+            <div className=" items-center gap-3 sticky top-0 justify-between flex px-[1rem] pt-4 py-3 bg-white sm:hidden   text-[#004D43] ">
                 <div className="">
                     <Image
                         src="https://i.ibb.co/ZdsyCMX/Logo-removebg-1.png"
@@ -179,7 +182,6 @@ export default function Navbar() {
                                 {/* <button className="text-[#4AFAAB] font-semibold">Join</button> */}
                                 <button onClick={handleLogout} className={` bg-[#4967FF] py-2 text-[#fff] font-semibold px-3  rounded-lg`}><LuLogOut /></button>
                                 <RiMenu2Fill className="text-2xl mr-1" onClick={() => { setIsMenuOpen(!isMenuOpen) }} />
-
                             </div>
                         </>) : (<>
                             <div className="flex gap-5 items-center">
@@ -193,7 +195,13 @@ export default function Navbar() {
             </div>
             {isMenuOpen && <>
 
-                <div className="z-[999]  absolute top-0 items-end flex flex-col right-0 pt-8 w-[17rem]  pr-8 h-screen bg-black bg-opacity-10 backdrop-blur-lg text-[#004D43] ">
+                <motion.div
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={menuVariants}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    className="z-[999]  absolute top-0 items-end flex flex-col right-0 pt-8 w-full  pr-8  bg-white text-[#000] ">
                     <RxCross2 className="text-2xl  mb-5" onClick={() => { setIsMenuOpen(!isMenuOpen) }} />
 
                     {
@@ -202,16 +210,16 @@ export default function Navbar() {
                                 <p style={{
                                     textDecoration: pathname === item.path ? 'underline' : 'none'
 
-                                }} className=" NeueMontreal-Regular text-[#16423C]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer" >{item.name} </p></Link>
+                                }} className=" NeueMontreal-Regular text-[#000]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer" >{item.name} </p></Link>
 
                         )
                         )
                     }
                     {userData && userData?.role === "admin" &&
                         <Link href="/admin">
-                            <p className=" NeueMontreal-Regular text-[#004D43]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
+                            <p className=" NeueMontreal-Regular text-[#000]  text-end text-2xl my-5  hover:text-[#4AFAAB] cursor-pointer"  >Admin </p> </Link>
                     }
-                </div>
+                </motion.div>
             </>}
             {
                 open &&
@@ -290,18 +298,18 @@ export default function Navbar() {
                                 </h5>
                             </>
                         }
-                           {
+                        {
                             section === 2 && <>
                                 <p className="text-[25px] text-[#fff]  font-[500] text-center py-2 mb-6">Registeration Done</p>
                                 <div className="flex justify-center mb-5">
-                                <FaRegCircleCheck className="text-white text-center text-[5rem]" />
+                                    <FaRegCircleCheck className="text-white text-center text-[5rem]" />
                                 </div>
 
 
-<p className="text-white text-center">Check Your Email To verify Your Account!</p> <br />
-<p className="text-white text-center">(Within 3 Minutes)</p>
-                                    <button onClick={() => { setOpen(!open) }} type="submit" className={`mt-5  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>   Okay
-                                    </button>
+                                <p className="text-white text-center">Check Your Email To verify Your Account!</p> <br />
+                                <p className="text-white text-center">(Within 3 Minutes)</p>
+                                <button onClick={() => { setOpen(!open) }} type="submit" className={`mt-5  flex w-full justify-center rounded-md bg-[#CDEA68]  px-3 py-1.5 text-sm  leading-6 text-[#0A1D26] shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2  cursor-pointer`}>   Okay
+                                </button>
 
 
                             </>

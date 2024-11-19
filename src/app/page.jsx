@@ -2,6 +2,7 @@
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import CustomCursor from '../components/CustomCursor';
+import { motion, useScroll } from "framer-motion";
 
 import HomeMarquee from "../components/Marquee/home";
 import Navbar from "../components/navbar/page";
@@ -27,6 +28,7 @@ const Home = () => {
     if (loading) {
         return <Loader />;
     }
+    
     return (
         <div className="">
             <div className=" min-w-[100%]  ">
