@@ -18,7 +18,7 @@ const redisClient2 = () => {
 
 const redisClient3 = () => {
     if (process.env.REDIS3_URL) {
-      console.log('Redis 2 Connected');
+      console.log('Redis 3 Connected');
       return new Redis(process.env.REDIS3_URL);
     }
     throw new Error('Redis 2 Connection Failed');
