@@ -1,9 +1,9 @@
 import Gallary from '../../../models/gallary.models';
 import connectDB from '../../../utils/connectDB';
 import { NextResponse } from 'next/server';
-import { redis } from '../../../utils/redis'; // Import Redis
+import {  redisWithFallback } from '../../../utils/redis'; // Import Redis
 import slack from '../../../services/slack';
-;
+
 // POST request handler for uploading images
 export const POST = async (req) => {
     await connectDB()
@@ -23,8 +23,7 @@ export const POST = async (req) => {
             urls.map((url) => ({ url }))
         );
 
-        // Invalidate the cache since new images are added
-        await redis.del('galleries'); // Cache key to invalidate
+        await  redisWithFallback("del",'galleries')
 
         return new Response(JSON.stringify({ message: "Images uploaded successfully", insertedUrls }), {
             status: 201,
@@ -42,7 +41,7 @@ export const POST = async (req) => {
 export const GET = async () => {
     try {
        // Check if galleries are cached
-        const cachedGalleries = await redis.get('galleries');
+        const cachedGalleries = await redisWithFallback('get','galleries');
         if (cachedGalleries) {
             return NextResponse.json({ success: true, data: JSON.parse(cachedGalleries) }, { status: 200 });
         }
@@ -51,7 +50,7 @@ export const GET = async () => {
         const galleries = await Gallary.find({});
 
         // Cache the fetched galleries for 1 week
-        await redis.set('galleries', JSON.stringify(galleries), 'EX', 60 * 60 * 24 * 7); // Cache for 1 week
+        await redisWithFallback('set','galleries', JSON.stringify(galleries), 'EX', 86400 );
 
         return NextResponse.json({ success: true, data: galleries }, { status: 200 });
     } catch (error) {
@@ -60,10 +59,9 @@ export const GET = async () => {
     }
 };
 
-// DELETE request handler for removing a specific gallery item by id
 export const DELETE = async (req) => {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get('id'); // Get the ID from query string
+    const id = searchParams.get('id');
 
     try {
         await connectDB();
@@ -74,7 +72,7 @@ export const DELETE = async (req) => {
         }
 
         // Invalidate the cache since an image has been deleted
-        await redis.del('galleries'); // Cache key to invalidate
+        await  redisWithFallback("del",'galleries')
 
         return NextResponse.json({ success: true, message: 'Image deleted successfully' }, { status: 200 });
     } catch (error) {

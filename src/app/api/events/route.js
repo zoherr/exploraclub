@@ -1,28 +1,24 @@
 import connectDB from "../../../utils/connectDB";
 import Event from "../../../models/event.model";
 import { NextRequest, NextResponse } from "next/server";
-import { redis } from "../../../utils/redis"; // Redis import
+import { redisWithFallback } from "../../../utils/redis"; // Redis import
 import slack from "../../../services/slack";
 
-// connectDB();
 
-// POST: Create an Event
 export const POST = async (req) => {
   await connectDB();
   try {
     const body = await req.json();
     console.log(body);
 
-    // Store event data temporarily in Redis before saving
     const tempEventKey = `event:temp:${Date.now()}`;
-    await redis.set(tempEventKey, JSON.stringify(body), 'EX', 60 * 5); // Set temporary data for 5 minutes
 
+    await  redisWithFallback("set",tempEventKey, JSON.stringify(body), 'EX', 60 * 5)
     const event = new Event(body);
     await event.save();
+    await  redisWithFallback("del",tempEventKey)
+    await  redisWithFallback("del",'events:all')
 
-    // Remove temp event data from Redis after saving
-    await redis.del(tempEventKey);
-    await redis.del('events:all');
     // Success response
     return new Response(JSON.stringify({ success: true, data: event }), {
       status: 201,
@@ -43,7 +39,7 @@ export const POST = async (req) => {
 // GET: Retrieve all events with caching
 export const GET = async (req) => {
     try {
-      const cachedEvents = await redis.get('events:all');
+      const cachedEvents =  await  redisWithFallback("get",'events:all');
       if (cachedEvents) {
         const sortedEvents = JSON.parse(cachedEvents).sort((a, b) => new Date(a.date) - new Date(b.date));
         return new Response(JSON.stringify({ success: true, data: sortedEvents }), {
@@ -53,14 +49,13 @@ export const GET = async (req) => {
       }
       await connectDB();
 
-      // If not cached, retrieve from the database
       const events = await Event.find();
 
       // Sort events by date
       const sortedEvents = events.sort((a, b) => new Date(a.date) - new Date(b.date));
 
       // Cache the sorted events in Redis for 1 hour
-      await redis.set('events:all', JSON.stringify(sortedEvents), 'EX', 3600); // Cache for 1 hour
+      await redisWithFallback("set",'events:all', JSON.stringify(sortedEvents), 'EX', 3600); // Cache for 1 hour
 
       return new Response(JSON.stringify({ success: true, data: sortedEvents }), {
         status: 200,
@@ -77,4 +72,3 @@ export const GET = async (req) => {
       });
     }
   };
-

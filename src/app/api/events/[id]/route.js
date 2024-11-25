@@ -49,11 +49,10 @@ export const GET = async (req, { params }) => {
 export const PUT = async (req, { params }) => {
     await connectDB();
 
-    const { id } = params; // Extracting event ID from params
-    const updatedData = await req.json(); // Extracting updated event data from the request body
+    const { id } = params; 
+    const updatedData = await req.json();
 
     try {
-        // Find the event by its ID and update it with the provided data
         const event = await Event.findByIdAndUpdate(id, updatedData, {
             new: true, // Return the updated document
             runValidators: true, // Ensure that any model validators are applied
