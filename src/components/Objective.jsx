@@ -10,6 +10,8 @@ const Objective = () => {
                 {/*  */}
                 <div className="sm:flex gap-16 justify-between">
                     <motion.div
+                        whileDrag={{ scale: 0.9, rotate: 10 }}
+                        drag
                         initial={{ y: 20 }}
                         animate={{ y: 0 }}
                         whileHover={{ scale: 1.1 }}
@@ -29,7 +31,10 @@ const Objective = () => {
                         <p className="text-gray-700 mt-2">Our primary mission is to keep you informed about the latest IT trends. The tech world is a fast-paced arena, and staying updated is essential to thrive. We bring in industry experts to provide insights into current IT trends, ensuring that our members are at the forefront of technology.</p>
                     </motion.div>
 
-                    <motion.div initial={{ y: 20 }}
+                    <motion.div
+                       whileDrag={{ scale: 0.9, rotate: 10 }}
+                       drag
+                        initial={{ y: 20 }}
                         animate={{ y: 0 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }} className="sm:w-[50%] mt-10 sm:mt-0 bg-[#4967FF] text-white rounded-lg p-6">
@@ -52,6 +57,8 @@ const Objective = () => {
 
 
                     <motion.div initial={{ y: 20 }}
+                       whileDrag={{ scale: 0.9, rotate: 10 }}
+                       drag
                         animate={{ y: 0 }}
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }} className="sm:w-[50%] mt-10 sm:mt-0 bg-[#4967FF] text-white rounded-lg p-6">
@@ -69,6 +76,9 @@ const Objective = () => {
                         <p className=" mt-2">For those of you interested in software development, we offer a platform to develop and showcase your coding skills. You can collaborate on real-world projects, participate in coding bootcamps, and learn from experienced developers, all within the clubs supportive environment.                        </p>
                     </motion.div>
                     <motion.div
+                    
+                       whileDrag={{ scale: 0.9, rotate: 10 }}
+                       drag
                         initial={{ y: 20 }}
                         animate={{ y: 0 }}
                         whileHover={{ scale: 1.1 }}

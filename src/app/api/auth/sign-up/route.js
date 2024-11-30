@@ -4,12 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 import bcryptjs from "bcryptjs"
 import jwt from 'jsonwebtoken';
 import slack from "../../../../services/slack"
+import VerificationToken from "../../../../models/verificationToken.model";
+
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
 import { addMinutes, isAfter, parseISO } from 'date-fns';
 import { redisWithFallback } from "../../../../utils/redis"
-connectDB()
 export const POST = async (req) => {
+    await connectDB()
     try {
         const body = await req.json();
         const { name, email, password, enrollmentNo, semester } = body;
@@ -111,10 +113,14 @@ export const POST = async (req) => {
             subject: 'Welcome to Explora Club!!',
             html: emailTemplate,
         };
-
-        const userData = { name, email, hashedPassword,enrollmentNo: enrollmentNo.toUpperCase(), semester };
-
-        await  redisWithFallback("set",verificationToken,JSON.stringify(userData), 'EX', 300)
+        await VerificationToken.create({
+            token: verificationToken,
+            name,
+            email,
+            hashedPassword,
+            enrollmentNo: enrollmentNo.toUpperCase(),
+            semester,
+        });
         const response = NextResponse.json({ message: "User saved successfully" });
 
         await transporter.sendMail(mailOptions);
