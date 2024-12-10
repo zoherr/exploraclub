@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
-const globalWithMongoose = global as typeof global & { mongoose: { conn: any; promise: Promise<any> | null } };
+// Create a global cache for the mongoose connection
+const globalWithMongoose = global;
 
 if (!globalWithMongoose.mongoose) {
   globalWithMongoose.mongoose = { conn: null, promise: null };
